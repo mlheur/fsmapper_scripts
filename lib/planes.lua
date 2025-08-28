@@ -102,6 +102,9 @@ function mgr.add_mappings(aircraft,device_mgr)
     if model ~= nil then
         device_mgr.add_mappings(model,F710)
     end
+    if make == "Darkstar" then
+        device_mgr.add_mappings(make,Yoke)
+    end
 end
 
 return mgr
