@@ -8,6 +8,7 @@ mapper.set_primary_mappings{
     {
         event=mapper.events.change_aircraft,
         action = function (evid,args)
+            if args.aircraft == nil then return end
             mapper.set_secondary_mappings{}
             plane_mgr.add_mappings(args.aircraft,device_mgr)
         end
