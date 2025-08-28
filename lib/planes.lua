@@ -72,7 +72,7 @@ local function get_make_model(aircraft)
     if first_word      == "B787"                  then return "B787",model end
     if first_word      == "C152"                  then return "C152",model end
     if first_two_words == "Cessna CJ4"            then return "CJ4",model end
-    if first_two_words == "Experimental Darkstar" then return "Darkstart",model end
+    if first_two_words == "Experimental Darkstar" then return "Darkstar",model end
     if first_two_words == "DR400 Robin"           then return "DR400",model end
     if first_word      == "F18"                   then return "F18",model end
     if first_word      == "FlightDesignCT"        then return "CTSL",model end
