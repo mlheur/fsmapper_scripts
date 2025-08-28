@@ -98,7 +98,6 @@ local function get_make_model(aircraft)
 end
 
 function mgr.add_mappings(aircraft,device_mgr)
-    if aircraft == nil then return end
     make,model = get_make_model(aircraft)
     if model ~= nil then
         device_mgr.add_mappings(model,F710)

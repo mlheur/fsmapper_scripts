@@ -9,12 +9,11 @@ function mgr.add_mappings(model,mapper_device)
                 " model:["..model.."]"..
                 " input:["..input_name.."]"..
                 " action:["..action_name.."]"..
-                " RPN:["..model_map[model].."]"..
                 " event:["..mapper_device.map[input_name][action_name].__event__.."]"
             )
             mapper.add_secondary_mappings({{
                 event = mapper_device.map[input_name][action_name].__event__,
-                action = msfs.mfwasm.rpn_executer(model_map[model]),
+                action = model_map[model],
             }})
         end
     end
