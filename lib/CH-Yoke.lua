@@ -34,8 +34,6 @@ dev.profiles.Darkstar.modifiers = {
 
 dev.profiles.E300 = { name=dev.name, type=dev.type, identifier=dev.identifier }
 dev.profiles.E300.modifiers = {
-    { name = "button7", modtype = 'button' },
-    { name = "button8", modtype = 'button' },
     { name = 'ry', modtype = 'raw', },
     { name = 'rx', modtype = 'raw', },
 }
