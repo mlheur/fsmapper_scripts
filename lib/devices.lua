@@ -1,6 +1,7 @@
 local mgr = {}
 
 function mgr.add_mappings(model,mapper_device)
+    if model == nil then return end
     for input_name,event_map in pairs(mapper_device.map) do
         for action_name,model_map in pairs(event_map) do
             if model_map[model] == nil then return end
