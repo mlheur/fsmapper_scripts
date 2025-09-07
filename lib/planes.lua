@@ -102,8 +102,11 @@ end
 
 function mgr.add_mappings(aircraft,device_mgr)
     make,model = get_make_model(aircraft)
-    device_mgr.add_mappings(model,F710)
-    device_mgr.add_mappings(make,Yoke)
+    for _,device in ipairs({F710,Yoke}) do
+        device_mgr.reset_device(make,device)
+        device_mgr.add_mappings(make,device)
+        device_mgr.add_mappings(model,device)
+    end
 end
 
 return mgr
