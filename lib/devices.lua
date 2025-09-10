@@ -12,7 +12,7 @@ function mgr.add_mappings(profile,mapper_device)
     end
     mapper.print("Trying to load mappings for profile=["..profile.."] device=["..mapper_device.name.."]")
     for input_name,event_map in pairs(mapper_device.map) do
-        mapper.print("Found input name=["..input_name.."]")
+--        mapper.print("Found input name=["..input_name.."]")
         for action_name,model_map in pairs(event_map) do
             mapper.print("Found action name=["..action_name.."]")
             if model_map[profile] ~= nil then
