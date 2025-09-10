@@ -4,11 +4,53 @@ dev.name = "CH-Yoke"
 dev.type = "dinput"
 dev.identifier = {guid = '{1DDD4F20-8387-11ED-8001-444553540000}'}
 
+--$ awk '{for (i=1;i<=NF;i++){if($i=="return"){print $(i+1)}}}' planes.lua | awk -F, '{print $1}' | sort -u | grep -v '^mgr$' | xargs echo
+--A20N A320 A5 B350 B748 B78X BE36 BE58 Bell407 C152 C172 C208 C25C C700 Cabri CC19 CP10 Cub DA40 DA62 Darkstar DC3 DGF DHC2 DR40 DV20 E300 FA18E FDCT G21A H4 JN4D MXS Orbis PC6 PIVI PTS2 S22T SAVG Spirit TBM9 VELO VL3 Wright
 
 dev.presets = {}
-dev.presets.E300 = "gaVariProp"
-dev.presets.C172 = "gaFixedProp"
 
+-- dev.presets.A20N    =
+-- dev.presets.A320    =
+-- dev.presets.B350    =
+-- dev.presets.B748    =
+-- dev.presets.B78X    =
+-- dev.presets.BE36    =
+-- dev.presets.BE58    =
+-- dev.presets.Bell407 =
+dev.presets.C152    = "gaFixedProp"
+dev.presets.C172    = "gaFixedProp"
+-- dev.presets.C208    =
+-- dev.presets.C25C    =
+-- dev.presets.C700    =
+-- dev.presets.Cabri   =
+-- dev.presets.CC19    =
+-- dev.presets.CP10    =
+-- dev.presets.Cub     =
+-- dev.presets.DA40    =
+-- dev.presets.DA62    =
+-- dev.presets.DC3     =
+-- dev.presets.DGF     =
+-- dev.presets.DHC2    =
+-- dev.presets.DR40    =
+-- dev.presets.DV20    =
+dev.presets.E300    = "gaVariProp"
+-- dev.presets.FA18E   =
+-- dev.presets.FDCT    =
+-- dev.presets.G21A    =
+-- dev.presets.H4      =
+-- dev.presets.JN4D    =
+-- dev.presets.MXS     =
+-- dev.presets.Orbis   =
+-- dev.presets.PC6     =
+-- dev.presets.PIVI    =
+-- dev.presets.PTS2    =
+-- dev.presets.S22T    =
+-- dev.presets.SAVG    =
+-- dev.presets.Spirit  =
+-- dev.presets.TBM9    =
+-- dev.presets.VELO    =
+-- dev.presets.VL3     =
+-- dev.presets.Wright  =
 
 dev.profiles = {}
 
