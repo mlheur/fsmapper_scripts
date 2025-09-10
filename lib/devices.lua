@@ -14,7 +14,7 @@ function mgr.add_mappings(profile,mapper_device)
     for input_name,event_map in pairs(mapper_device.map) do
 --        mapper.print("Found input name=["..input_name.."]")
         for action_name,model_map in pairs(event_map) do
-            mapper.print("Found action name=["..action_name.."]")
+--            mapper.print("Found action name=["..action_name.."]")
             if model_map[profile] ~= nil then
                 mapper.print(
                     "Adding device event map,"..
