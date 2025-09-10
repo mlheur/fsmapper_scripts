@@ -19,7 +19,7 @@ dev.presets = {}
 -- dev.presets.Bell407 =
 dev.presets.C152    = "gaFixedProp"
 dev.presets.C172    = "gaFixedProp"
--- dev.presets.C208    =
+dev.presets.C208    = "TurboProp"
 -- dev.presets.C25C    =
 -- dev.presets.C700    =
 -- dev.presets.Cabri   =
@@ -90,6 +90,15 @@ dev.profiles.gaVariProp.modifiers = {
 }
 dev.map.ry.change.gaVariProp = action_mgr.ENGINE_Propeller_1
 dev.map.rx.change.gaVariProp = action_mgr.FUEL_Mixture_1
+
+
+dev.profiles.TurboProp = { name=dev.name, type=dev.type, identifier=dev.identifier }
+dev.profiles.TurboProp.modifiers = {
+    { name = 'ry', modtype = 'raw', },  -- prop lever
+    { name = 'rx', modtype = 'raw', },  -- mixture
+}
+dev.map.ry.change.TurboProp = action_mgr.ENGINE_Propeller_1_feather
+dev.map.rx.change.TurboProp = action_mgr.FUEL_1_Condition
 
 
 dev.profiles.A5 = { name=dev.name, type=dev.type, identifier=dev.identifier }
