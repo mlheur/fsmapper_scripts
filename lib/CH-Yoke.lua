@@ -32,8 +32,8 @@ dev.profiles.Darkstar.modifiers = {
     },
 }
 
-dev.profiles.E300 = { name=dev.name, type=dev.type, identifier=dev.identifier }
-dev.profiles.E300.modifiers = {
+dev.profiles.gaVariProp = { name=dev.name, type=dev.type, identifier=dev.identifier }
+dev.profiles.gaVariProp.modifiers = {
     { name = 'ry', modtype = 'raw', },
     { name = 'rx', modtype = 'raw', },
 }
@@ -55,15 +55,18 @@ dev.map.button7.down = {}
 dev.map.button8 = {}
 dev.map.button8.down = {}
 
+dev.presets = {}
+dev.presets.E300 = "gaVariProp"
+
 local function inverse_mixmax_percent(value)
     return(( -50000 + value ) / -100000)
 end
 
-dev.map.ry.change.E300 = function(evid,args)
+dev.map.ry.change.gaVariProp = function(evid,args)
     msfs.execute_input_event('ENGINE_Propeller_1',inverse_mixmax_percent(args))
 end
 
-dev.map.rx.change.E300 = function(evid,args)
+dev.map.rx.change.gaVariProp = function(evid,args)
     msfs.execute_input_event('FUEL_Mixture_1',inverse_mixmax_percent(args))
 end
 
