@@ -100,7 +100,7 @@ local function get_make_model(aircraft)
     if first_word      == "Wright"                then return "Wright",model end
 end
 
-function mgr.add_mappings(aircraft,device_mgr)
+function mgr.add_mappings(aircraft)
     make,model = get_make_model(aircraft)
     for _,device in ipairs({F710,Yoke}) do
         device_mgr.reset_device(make,device)
