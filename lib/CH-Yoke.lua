@@ -50,6 +50,22 @@ dev.map.ry.change.gaVariProp = action_mgr.ENGINE_Propeller_1
 dev.map.rx.change.gaVariProp = action_mgr.FUEL_Mixture_1
 
 
+dev.profiles.A5 = { name=dev.name, type=dev.type, identifier=dev.identifier }
+dev.profiles.A5.modifiers = {
+    {
+        name = 'rx',
+        modtype = 'quantized_stick',
+        modparam = {
+            repeat_mode = false,
+            activate_threshold = 48000,
+            release_threshold  = 48001,
+        }
+    },
+}
+dev.map.rx.positive.A5 = action_mgr.RUDDER_down
+dev.map.rx.negative.A5 = action_mgr.RUDDER_up
+
+
 dev.profiles.Darkstar = { name=dev.name, type=dev.type, identifier=dev.identifier }
 dev.profiles.Darkstar.modifiers = {
     { name = "button7", modtype = 'button' },

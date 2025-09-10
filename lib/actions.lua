@@ -32,4 +32,9 @@ end
 mgr.SCRAM_on  = msfs.input_event_executer('ENGINE_Transition', 1)
 mgr.SCRAM_off = msfs.input_event_executer('ENGINE_Transition', 0)
 
+
+mgr.RUDDER_up   = msfs.input_event_executer('HANDLING_Water_Rudder', 0)
+mgr.RUDDER_down = msfs.input_event_executer('HANDLING_Water_Rudder', 1)
+
+
 return mgr
