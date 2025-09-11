@@ -36,7 +36,7 @@ dev.presets.C208    = "TurboProp"
 dev.presets.E300    = "gaVariProp"
 -- dev.presets.FA18E   =
 -- dev.presets.FDCT    =
--- dev.presets.G21A    =
+dev.presets.G21A    = "gaVariProp2"
 -- dev.presets.H4      =
 -- dev.presets.JN4D    =
 -- dev.presets.MXS     =
@@ -90,6 +90,15 @@ dev.profiles.gaVariProp.modifiers = {
 }
 dev.map.ry.change.gaVariProp = action_mgr.ENGINE_Propeller_1
 dev.map.rx.change.gaVariProp = action_mgr.FUEL_Mixture_1
+
+
+dev.profiles.gaVariProp2 = { name=dev.name, type=dev.type, identifier=dev.identifier }
+dev.profiles.gaVariProp2.modifiers = {
+    { name = 'ry', modtype = 'raw', },  -- prop lever
+    { name = 'rx', modtype = 'raw', },  -- mixture
+}
+dev.map.ry.change.gaVariProp2 = action_mgr.ENGINE_Propeller_2
+dev.map.rx.change.gaVariProp2 = action_mgr.FUEL_Mixture_2
 
 
 dev.profiles.TurboProp = { name=dev.name, type=dev.type, identifier=dev.identifier }

@@ -8,22 +8,33 @@ local function mixmax_percent(value)
     return(( 50000 + value ) / 100000)
 end
 
+
 mgr.FUEL_Mixture_1 = function(evid,args)
     msfs.execute_input_event('FUEL_Mixture_1',inverse_mixmax_percent(args))
+end
+mgr.FUEL_Mixture_2 = function(evid,args)
+    value = inverse_mixmax_percent(args)
+    msfs.execute_input_event('FUEL_Mixture_1',value)
+    msfs.execute_input_event('FUEL_Mixture_2',value)
+end
+
+
+mgr.FUEL_1_Condition = function(evid,args)
+    msfs.execute_input_event('FUEL_1_Condition_Lever',math.floor(3*mixmax_percent(args)))
 end
 
 
 mgr.ENGINE_Propeller_1 = function(evid,args)
     msfs.execute_input_event('ENGINE_Propeller_1',inverse_mixmax_percent(args))
 end
+mgr.ENGINE_Propeller_2 = function(evid,args)
+    value = inverse_mixmax_percent(args)
+    msfs.execute_input_event('ENGINE_Propeller_1',value)
+    msfs.execute_input_event('ENGINE_Propeller_2',value)
+end
 
 mgr.ENGINE_Propeller_1_feather = function(evid,args)
     msfs.execute_input_event('ENGINE_Propeller_1',-.25 + 1.25*inverse_mixmax_percent(args))
-end
-
-
-mgr.FUEL_1_Condition = function(evid,args)
-    msfs.execute_input_event('FUEL_1_Condition_Lever',math.floor(3*mixmax_percent(args)))
 end
 
 
