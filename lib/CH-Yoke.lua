@@ -11,7 +11,7 @@ dev.presets = {}
 
 -- dev.presets.A20N    =
 -- dev.presets.A320    =
--- dev.presets.B350    =
+dev.presets.B350    = "TurboProp2"
 -- dev.presets.B748    =
 -- dev.presets.B78X    =
 dev.presets.BE36    = "gaVariProp"
@@ -108,6 +108,15 @@ dev.profiles.TurboProp.modifiers = {
 }
 dev.map.ry.change.TurboProp = action_mgr.ENGINE_Propeller_1_feather
 dev.map.rx.change.TurboProp = action_mgr.FUEL_1_Condition
+
+
+dev.profiles.TurboProp2 = { name=dev.name, type=dev.type, identifier=dev.identifier }
+dev.profiles.TurboProp2.modifiers = {
+    { name = 'ry', modtype = 'raw', },  -- prop lever
+    { name = 'rx', modtype = 'raw', },  -- mixture
+}
+dev.map.ry.change.TurboProp2 = action_mgr.ENGINE_Propeller_2_feather
+dev.map.rx.change.TurboProp2 = action_mgr.FUEL_2_Condition
 
 
 dev.profiles.A5 = { name=dev.name, type=dev.type, identifier=dev.identifier }

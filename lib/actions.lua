@@ -22,7 +22,11 @@ end
 mgr.FUEL_1_Condition = function(evid,args)
     msfs.execute_input_event('FUEL_1_Condition_Lever',math.floor(3*mixmax_percent(args)))
 end
-
+mgr.FUEL_2_Condition = function(evid,args)
+    value = math.floor(3*mixmax_percent(args))
+    msfs.execute_input_event('FUEL_1_Condition_Lever',value)
+    msfs.execute_input_event('FUEL_2_Condition_Lever',value)
+end
 
 mgr.ENGINE_Propeller_1 = function(evid,args)
     msfs.execute_input_event('ENGINE_Propeller_1',inverse_mixmax_percent(args))
@@ -36,7 +40,11 @@ end
 mgr.ENGINE_Propeller_1_feather = function(evid,args)
     msfs.execute_input_event('ENGINE_Propeller_1',-.25 + 1.25*inverse_mixmax_percent(args))
 end
-
+mgr.ENGINE_Propeller_2_feather = function(evid,args)
+    value = -.25 + 1.25*inverse_mixmax_percent(args)
+    msfs.execute_input_event('ENGINE_Propeller_1',value)
+    msfs.execute_input_event('ENGINE_Propeller_2',value)
+end
 
 mgr.SPOILERS_off = msfs.input_event_executer('HANDLING_Spoilers', 0)
 mgr.SPOILERS_on  = msfs.input_event_executer('HANDLING_Spoilers', 1)
