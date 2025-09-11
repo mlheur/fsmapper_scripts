@@ -101,12 +101,25 @@ local function get_make_model(aircraft)
     if first_word      == "Wright"                then return "Wright",model end
 end
 
+local function adopt_preset(profile,device)
+    if device["presets"] ~= nil then
+        for key,value in pairs(device.presets) do
+            if profile == key then
+                return value
+            end
+        end
+    end
+    return profile
+end
+
 function mgr.add_mappings(aircraft)
     make,model = get_make_model(aircraft)
     for _,device in ipairs({F710,Yoke}) do
-        device_mgr.reset_device(make,device)
-        device_mgr.add_mappings(make,device)
-        device_mgr.add_mappings(model,device)
+        profile = adopt_preset(make,device)
+        device_mgr.reset_device(profile,device)
+        device_mgr.add_mappings(profile,device)
+        profile = adopt_preset(model,device)
+        device_mgr.add_mappings(profile,device)
     end
 end
 
