@@ -66,7 +66,7 @@ local function get_make_model(aircraft)
     -- The rest of the aircraft have either touch input or minimal instruments
     model = nil
     if first_two_words == "Airbus A320"           then return "A320",model end
-    if first_two_words == "A320neo"               then return "A20N",model end
+    if first_word      == "A320neo"               then return "A20N",model end
     if first_two_words == "Boeing 747-8i"         then return "B748",model end
     if first_two_words == "Boeing 787-10"         then return "B78X",model end
     if first_word      == "B787"                  then return "B78X",model end
