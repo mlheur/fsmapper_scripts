@@ -48,7 +48,9 @@ end
 
 mgr.SPOILERS_off = msfs.input_event_executer('HANDLING_Spoilers', 0)
 mgr.SPOILERS_on  = msfs.input_event_executer('HANDLING_Spoilers', 1)
-
+mgr.SPOILERS_lever = function(evid,args)
+    msfs.execute_input_event('HANDLING_Spoilers',inverse_mixmax_percent(args))
+end
 
 mgr.SCRAM_ready = function(evid,args)
     msfs.execute_input_event('ELECTRICAL_Fuel_Cell', 1)
