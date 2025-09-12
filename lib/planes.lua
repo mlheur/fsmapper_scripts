@@ -88,8 +88,8 @@ local function get_make_model(aircraft)
     if first_word      == "Pitts"                 then return "PTS2",model end
     if first_two_words == "Orbis Asobo"           then return "Orbis",model end
     if first_two_words == "Asobo Savage"          then return "SAVG",model end
-    if first_word      == "Savage"                then return "SAVG",model end
     if first_two_words == "Savage Shock"          then return "Cub",model end
+    if first_word      == "Savage"                then return "SAVG",model end
     if first_two_words == "TBM 930"               then return "TBM9",model end
     if first_word      == "VL3"                   then return "VL3",model end
     if first_two_words == "Douglas DC-3"          then return "DC3",model end
