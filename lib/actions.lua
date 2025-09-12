@@ -16,6 +16,10 @@ local function feather_25pct(value)
     return(-.25 + 1.25*inverse_mixmax_percent(value))
 end
 
+local function throttle_reducer(value)
+    return(-.25 * mixmax_percent(value))
+end
+
 
 local function iterate_event(prestring,poststring,iterations,value)
     i = 0
@@ -32,6 +36,22 @@ local function iterator_generator(prestring,poststring,iterations,value_callback
     end
     return it_fn
 end
+
+
+mgr.ENGINE_Throttle = {}
+mgr.ENGINE_Throttle[1] = iterator_generator("ENGINE_Throttle_","",1,inverse_mixmax_percent)
+mgr.ENGINE_Throttle[2] = iterator_generator("ENGINE_Throttle_","",2,inverse_mixmax_percent)
+mgr.ENGINE_Throttle[4] = iterator_generator("ENGINE_Throttle_","",4,inverse_mixmax_percent)
+
+
+mgr.ENGINE_Throttle_Reverser = {}
+mgr.ENGINE_Throttle_Reverser[2] = iterator_generator("ENGINE_Throttle_Reverser_","",2,mixmax_percent)
+mgr.ENGINE_Throttle_Reverser[4] = iterator_generator("ENGINE_Throttle_Reverser_","",4,mixmax_percent)
+
+
+mgr.ENGINE_Throttle_Reducer = {}
+mgr.ENGINE_Throttle_Reducer[2] = iterator_generator("ENGINE_Throttle_","",2,throttle_reducer)
+mgr.ENGINE_Throttle_Reducer[4] = iterator_generator("ENGINE_Throttle_","",4,throttle_reducer)
 
 
 mgr.FUEL_Mixture = {}
@@ -57,7 +77,10 @@ mgr.ENGINE_Propeller_feather[2] = iterator_generator("ENGINE_Propeller_","",2,fe
 mgr.SPOILERS_off = msfs.input_event_executer('HANDLING_Spoilers', 0)
 mgr.SPOILERS_on  = msfs.input_event_executer('HANDLING_Spoilers', 1)
 mgr.SPOILERS_lever = function(evid,args)
-    msfs.execute_input_event('HANDLING_Spoilers',inverse_mixmax_percent(args))
+    msfs.execute_input_event('HANDLING_Spoilers',mixmax_percent(args))
+end
+mgr.SPOILERS_lever_16k = function(evid,args)
+    msfs.execute_input_event('HANDLING_Spoilers',16384*mixmax_percent(args))
 end
 
 

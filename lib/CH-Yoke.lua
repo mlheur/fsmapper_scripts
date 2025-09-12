@@ -9,11 +9,11 @@ dev.identifier = {guid = '{1DDD4F20-8387-11ED-8001-444553540000}'}
 
 dev.presets = {}
 
--- dev.presets.A20N    =
--- dev.presets.A320    =
+-- dev.presets.A20N    = nil; has a broken throttle complained about in many forums
+dev.presets.A320    = "C700"
 dev.presets.B350    = "TurboProp2"
--- dev.presets.B748    =
--- dev.presets.B78X    =
+-- dev.presets.B748    = nil; has unique values from other jumbo jets
+-- dev.presets.B78X    = nil; has unique values from other jumbo jets
 dev.presets.BE36    = "gaVariProp"
 dev.presets.BE58    = "gaVariProp2"
 -- dev.presets.Bell407 =
@@ -21,7 +21,7 @@ dev.presets.C152    = "gaFixedProp"
 dev.presets.C172    = "gaFixedProp"
 dev.presets.C208    = "TurboProp"
 -- dev.presets.C25C    =
-dev.presets.C700    = "JumboJet"
+-- dev.presets.C700    = nil; has unique values from other jumbo jets
 -- dev.presets.Cabri   =
 -- dev.presets.CC19    =
 dev.presets.CP10    = "gaFixedProp"
@@ -55,6 +55,10 @@ dev.presets.G21A    = "gaVariProp2"
 dev.profiles = {}
 
 dev.map = {}
+
+dev.map.z = {}
+dev.map.z.change = {}
+
 dev.map.rx = {}
 dev.map.rx.positive = {}
 dev.map.rx.negative = {}
@@ -76,31 +80,50 @@ dev.profiles[0] = { name=dev.name, type=dev.type, identifier=dev.identifier, mod
 
 
 dev.profiles.gaFixedProp = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.gaFixedProp = action_mgr.ENGINE_Throttle[1]
 dev.map.rx.change.gaFixedProp = action_mgr.FUEL_Mixture[1]
 
 
 dev.profiles.gaVariProp = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.gaVariProp = action_mgr.ENGINE_Throttle[1]
 dev.map.ry.change.gaVariProp = action_mgr.ENGINE_Propeller[1]
 dev.map.rx.change.gaVariProp = action_mgr.FUEL_Mixture[1]
 
 
 dev.profiles.gaVariProp2 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.gaVariProp2 = action_mgr.ENGINE_Throttle[2]
 dev.map.ry.change.gaVariProp2 = action_mgr.ENGINE_Propeller[2]
 dev.map.rx.change.gaVariProp2 = action_mgr.FUEL_Mixture[2]
 
 
 dev.profiles.TurboProp = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.TurboProp = action_mgr.ENGINE_Throttle[1]
 dev.map.ry.change.TurboProp = action_mgr.ENGINE_Propeller_feather[1]
 dev.map.rx.change.TurboProp = action_mgr.FUEL_Condition[1]
 
 
 dev.profiles.TurboProp2 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.TurboProp2 = action_mgr.ENGINE_Throttle[2]
 dev.map.ry.change.TurboProp2 = action_mgr.ENGINE_Propeller_feather[2]
 dev.map.rx.change.TurboProp2 = action_mgr.FUEL_Condition[2]
 
 
-dev.profiles.JumboJet = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.ry.change.JumboJet = action_mgr.SPOILERS_lever
+dev.profiles.B748 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.B748 = action_mgr.ENGINE_Throttle[4]
+dev.map.rx.change.B748 = action_mgr.ENGINE_Throttle_Reverser[4]
+dev.map.ry.change.B748 = action_mgr.SPOILERS_lever
+
+
+dev.profiles.B78X = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.B78X = action_mgr.ENGINE_Throttle[2]
+dev.map.rx.change.B78X = action_mgr.ENGINE_Throttle_Reverser[2]
+dev.map.ry.change.B78X = action_mgr.SPOILERS_lever
+
+
+dev.profiles.C700 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.C700 = action_mgr.ENGINE_Throttle[2]
+dev.map.rx.change.C700 = action_mgr.ENGINE_Throttle_Reducer[2]
+dev.map.ry.change.C700 = action_mgr.SPOILERS_lever_16k
 
 
 dev.profiles.A5 = { name=dev.name, type=dev.type, identifier=dev.identifier }
