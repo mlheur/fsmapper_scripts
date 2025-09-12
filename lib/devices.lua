@@ -1,5 +1,18 @@
 local mgr = {}
 
+function mgr.reset_device(profile,mapper_device)
+    if mapper_device.device ~= nil then
+        mapper_device.device:close()
+    end
+    if profile ~= nil and mapper_device.profiles[profile] ~= nil then
+        mapper.print("Found custom profile ["..profile.."] for mapper device name=["..mapper_device.name.."]")
+    else
+        profile = 0
+        mapper.print("Using the default profile for mapper device name=["..mapper_device.name.."]")
+    end
+    mapper_device.device = mapper.device(mapper_device.profiles[profile])
+end
+
 function mgr.add_mappings(profile,mapper_device)
     if profile == nil then return end
     mapper.print("Trying to load mappings for profile=["..profile.."] device=["..mapper_device.name.."]")
@@ -20,19 +33,6 @@ function mgr.add_mappings(profile,mapper_device)
             end
         end
     end
-end
-
-function mgr.reset_device(profile,mapper_device)
-    if mapper_device.device ~= nil then
-        mapper_device.device:close()
-    end
-    if profile ~= nil and mapper_device.profiles[profile] ~= nil then
-        mapper.print("Found custom profile ["..profile.."] for mapper device name=["..mapper_device.name.."]")
-    else
-        profile = 0
-        mapper.print("Using the default profile for mapper device name=["..mapper_device.name.."]")
-    end
-    mapper_device.device = mapper.device(mapper_device.profiles[profile])
 end
 
 return mgr
