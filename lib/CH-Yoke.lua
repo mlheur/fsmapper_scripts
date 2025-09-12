@@ -72,51 +72,31 @@ dev.map.button8 = {}
 dev.map.button8.down = {}
 
 
-dev.profiles[0] = { name=dev.name, type=dev.type, identifier=dev.identifier }
-dev.profiles[0].modifiers = {}
+dev.profiles[0] = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
 
 
-dev.profiles.gaFixedProp = { name=dev.name, type=dev.type, identifier=dev.identifier }
-dev.profiles.gaFixedProp.modifiers = {
-    { name = 'rx', modtype = 'raw', },  -- mixture
-}
-dev.map.rx.change.gaFixedProp = action_mgr.FUEL_Mixture_1
+dev.profiles.gaFixedProp = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.rx.change.gaFixedProp = action_mgr.FUEL_Mixture[1]
 
 
-dev.profiles.gaVariProp = { name=dev.name, type=dev.type, identifier=dev.identifier }
-dev.profiles.gaVariProp.modifiers = {
-    { name = 'ry', modtype = 'raw', },  -- prop lever
-    { name = 'rx', modtype = 'raw', },  -- mixture
-}
-dev.map.ry.change.gaVariProp = action_mgr.ENGINE_Propeller_1
-dev.map.rx.change.gaVariProp = action_mgr.FUEL_Mixture_1
+dev.profiles.gaVariProp = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.ry.change.gaVariProp = action_mgr.ENGINE_Propeller[1]
+dev.map.rx.change.gaVariProp = action_mgr.FUEL_Mixture[1]
 
 
-dev.profiles.gaVariProp2 = { name=dev.name, type=dev.type, identifier=dev.identifier }
-dev.profiles.gaVariProp2.modifiers = {
-    { name = 'ry', modtype = 'raw', },  -- prop lever
-    { name = 'rx', modtype = 'raw', },  -- mixture
-}
-dev.map.ry.change.gaVariProp2 = action_mgr.ENGINE_Propeller_2
-dev.map.rx.change.gaVariProp2 = action_mgr.FUEL_Mixture_2
+dev.profiles.gaVariProp2 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.ry.change.gaVariProp2 = action_mgr.ENGINE_Propeller[2]
+dev.map.rx.change.gaVariProp2 = action_mgr.FUEL_Mixture[2]
 
 
-dev.profiles.TurboProp = { name=dev.name, type=dev.type, identifier=dev.identifier }
-dev.profiles.TurboProp.modifiers = {
-    { name = 'ry', modtype = 'raw', },  -- prop lever
-    { name = 'rx', modtype = 'raw', },  -- mixture
-}
-dev.map.ry.change.TurboProp = action_mgr.ENGINE_Propeller_1_feather
-dev.map.rx.change.TurboProp = action_mgr.FUEL_1_Condition
+dev.profiles.TurboProp = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.ry.change.TurboProp = action_mgr.ENGINE_Propeller_feather[1]
+dev.map.rx.change.TurboProp = action_mgr.FUEL_Condition[1]
 
 
-dev.profiles.TurboProp2 = { name=dev.name, type=dev.type, identifier=dev.identifier }
-dev.profiles.TurboProp2.modifiers = {
-    { name = 'ry', modtype = 'raw', },  -- prop lever
-    { name = 'rx', modtype = 'raw', },  -- mixture
-}
-dev.map.ry.change.TurboProp2 = action_mgr.ENGINE_Propeller_2_feather
-dev.map.rx.change.TurboProp2 = action_mgr.FUEL_2_Condition
+dev.profiles.TurboProp2 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.ry.change.TurboProp2 = action_mgr.ENGINE_Propeller_feather[2]
+dev.map.rx.change.TurboProp2 = action_mgr.FUEL_Condition[2]
 
 
 dev.profiles.JumboJet = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
