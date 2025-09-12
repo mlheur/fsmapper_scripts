@@ -82,7 +82,7 @@ local function get_make_model(aircraft)
     if first_two_words == "Beechcraft King"       then return "B350",model end
     if first_two_words == "Cessna Longitude"      then return "C700",model end
     if first_two_words == "Asobo LS8"             then return "MXS",model end
-    if first_two_words == "Asobot NXCub"          then return "CC19",model end
+    if first_two_words == "Asobo NXCub"          then return "CC19",model end
     if first_two_words == "Asobo XCub"            then return "CC19",model end
     if first_word      == "XCub"                  then return "CC19",model end
     if first_word      == "Pitts"                 then return "PTS2",model end
