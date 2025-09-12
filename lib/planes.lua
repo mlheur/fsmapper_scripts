@@ -103,10 +103,10 @@ end
 
 local function adopt_preset(profile,device)
     if device["presets"] ~= nil then
-        for key,value in pairs(device.presets) do
-            if profile == key then
-                return value
-            end
+        preset = device.presets[profile]
+        if preset ~= nil then
+            mapper.print("adopting preset ["..preset.."] from profile ["..profile.."]")
+            return preset
         end
     end
     return profile
