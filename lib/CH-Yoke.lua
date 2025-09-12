@@ -21,7 +21,7 @@ dev.presets.C152    = "gaFixedProp"
 dev.presets.C172    = "gaFixedProp"
 dev.presets.C208    = "TurboProp"
 -- dev.presets.C25C    =
--- dev.presets.C700    =
+dev.presets.C700    = "JumboJet"
 -- dev.presets.Cabri   =
 -- dev.presets.CC19    =
 dev.presets.CP10    = "gaFixedProp"
@@ -117,6 +117,10 @@ dev.profiles.TurboProp2.modifiers = {
 }
 dev.map.ry.change.TurboProp2 = action_mgr.ENGINE_Propeller_2_feather
 dev.map.rx.change.TurboProp2 = action_mgr.FUEL_2_Condition
+
+
+dev.profiles.JumboJet = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.ry.change.JumboJet = action_mgr.SPOILERS_lever
 
 
 dev.profiles.A5 = { name=dev.name, type=dev.type, identifier=dev.identifier }
