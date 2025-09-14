@@ -9,32 +9,32 @@ dev.identifier = {guid = '{1DDD4F20-8387-11ED-8001-444553540000}'}
 
 dev.presets = {}
 
--- dev.presets.A20N    = nil; has a broken throttle complained about in many forums
+dev.presets.A20N    = nil -- has a broken throttle complained about in many forums
 dev.presets.A320    = "C700"
 dev.presets.B350    = "TurboProp2"
--- dev.presets.B748    = nil; has unique values from other jumbo jets
--- dev.presets.B78X    = nil; has unique values from other jumbo jets
+dev.presets.B748    = nil -- has unique values from other jumbo jets
+dev.presets.B78X    = nil -- has unique values from other jumbo jets
 dev.presets.BE36    = "gaVariProp"
 dev.presets.BE58    = "gaVariProp2"
 -- dev.presets.Bell407 =
 dev.presets.C152    = "gaFixedProp"
 dev.presets.C172    = "gaFixedProp"
 dev.presets.C208    = "TurboProp"
--- dev.presets.C25C    =
--- dev.presets.C700    = nil; has unique values from other jumbo jets
+dev.presets.C25C    = nil -- has unique values from other jumbo jets
+dev.presets.C700    = nil -- has unique values from other jumbo jets
 -- dev.presets.Cabri   =
 dev.presets.CC19    = "gaVariProp"
 dev.presets.CP10    = "gaFixedProp"
 dev.presets.Cub     = "gaFixedProp"
--- dev.presets.DA40    = nil; all configured in-game
--- dev.presets.DA62    = nil; all configured in-game
+dev.presets.DA40    = "automatic"
+dev.presets.DA62    = "automatic2"
 dev.presets.DC3     = "gaVariProp2"
--- dev.presets.DGF     =
--- dev.presets.DHC2    =
--- dev.presets.DR40    =
--- dev.presets.DV20    =
+-- dev.presets.DGF     = nil -- glider with engine...
+dev.presets.DHC2    = "gaVariProp"
+dev.presets.DR40    = "gaFixedProp"
+dev.presets.DV20    = nil
 dev.presets.E300    = "gaVariProp"
--- dev.presets.FA18E   =
+dev.presets.FA18E   = nil
 -- dev.presets.FDCT    =
 dev.presets.G21A    = "gaVariProp2"
 -- dev.presets.H4      =
@@ -84,6 +84,14 @@ dev.map.z.change.gaFixedProp = action_mgr.ENGINE_Throttle[1]
 dev.map.rx.change.gaFixedProp = action_mgr.FUEL_Mixture[1]
 
 
+dev.profiles.automatic = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.automatic = action_mgr.ENGINE_Throttle[1]
+
+
+dev.profiles.automatic2 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.automatic2 = action_mgr.ENGINE_Throttle[2]
+
+
 dev.profiles.gaVariProp = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
 dev.map.z.change.gaVariProp = action_mgr.ENGINE_Throttle[1]
 dev.map.ry.change.gaVariProp = action_mgr.ENGINE_Propeller[1]
@@ -126,6 +134,17 @@ dev.map.rx.change.C700 = action_mgr.ENGINE_Throttle_Reducer[2]
 dev.map.ry.change.C700 = action_mgr.SPOILERS_lever_16k
 
 
+dev.profiles.DV20 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.DV20 = action_mgr.ENGINE_Throttle[1]
+dev.map.rx.change.DV20 = action_mgr.DEICE_Engine[1]
+dev.map.ry.change.DV20 = action_mgr.ENGINE_Propeller[1]
+
+
+dev.profiles.C25C = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.C25C = action_mgr.ENGINE_Throttle[2]
+dev.map.ry.change.C25C = action_mgr.SPOILERS_lever_16k
+
+
 dev.profiles.A5 = { name=dev.name, type=dev.type, identifier=dev.identifier }
 dev.profiles.A5.modifiers = {
     {
@@ -138,8 +157,28 @@ dev.profiles.A5.modifiers = {
         }
     },
 }
+dev.map.z.change.A5 = action_mgr.ENGINE_Throttle[1]
 dev.map.rx.positive.A5 = action_mgr.RUDDER_down
 dev.map.rx.negative.A5 = action_mgr.RUDDER_up
+
+
+dev.profiles.FA18E = { name=dev.name, type=dev.type, identifier=dev.identifier }
+dev.profiles.FA18E.modifiers = {
+    {
+        name = 'ry',
+        modtype = 'quantized_stick',
+        modparam = {
+            repeat_mode = true,
+            repeat_delay = 100,
+            repeat_interval = 100,
+            activate_threshold = 48000,
+            release_threshold  = 48001,
+        }
+    },
+}
+dev.map.z.change.FA18E = action_mgr.ENGINE_Throttle[2]
+dev.map.ry.negative.FA18E = action_mgr.SPOILERS_decrement
+dev.map.ry.positive.FA18E = action_mgr.SPOILERS_increment
 
 
 dev.profiles.Darkstar = { name=dev.name, type=dev.type, identifier=dev.identifier }
@@ -165,6 +204,7 @@ dev.profiles.Darkstar.modifiers = {
         }
     },
 }
+dev.map.z.change.Darkstar = action_mgr.ENGINE_Throttle[2]
 dev.map.ry.positive.Darkstar = action_mgr.SPOILERS_off
 dev.map.ry.negative.Darkstar = action_mgr.SPOILERS_on
 dev.map.rx.positive.Darkstar = action_mgr.SCRAM_ready

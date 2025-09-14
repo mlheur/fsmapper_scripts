@@ -76,6 +76,12 @@ mgr.ENGINE_Propeller_feather[2] = iterator_generator("ENGINE_Propeller_","",2,fe
 
 mgr.SPOILERS_off = msfs.input_event_executer('HANDLING_Spoilers', 0)
 mgr.SPOILERS_on  = msfs.input_event_executer('HANDLING_Spoilers', 1)
+mgr.SPOILERS_decrement = function(evid,args)
+    msfs.execute_input_event('HANDLING_Spoilers', 0)
+end
+mgr.SPOILERS_increment = function(evid,args)
+    msfs.execute_input_event('HANDLING_Spoilers', 2)
+end
 mgr.SPOILERS_lever = function(evid,args)
     msfs.execute_input_event('HANDLING_Spoilers',mixmax_percent(args))
 end
@@ -99,6 +105,10 @@ mgr.SCRAM_off = msfs.input_event_executer('ENGINE_Transition', 0)
 
 mgr.RUDDER_up   = msfs.input_event_executer('HANDLING_Water_Rudder', 0)
 mgr.RUDDER_down = msfs.input_event_executer('HANDLING_Water_Rudder', 1)
+
+
+mgr.DEICE_Engine = {}
+mgr.DEICE_Engine[1] = iterator_generator("DEICE_Engine_","",1,mixmax_percent)
 
 
 return mgr
