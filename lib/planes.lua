@@ -30,6 +30,13 @@ local function get_make_model(aircraft)
         return "DA40","G1000"
     end
 
+    if first_word == "Pitts" then
+        if string.find(aircraft," S1 Reno") ~= nil then
+            return "PTS1",nil
+        end
+        return "PTS2",nil
+    end
+
     -- G1000
     model = "G1000"
     if first_two_words == "Asobo Baron"           then return "BE58",model end
@@ -87,7 +94,6 @@ local function get_make_model(aircraft)
     if first_two_words == "Asobo NXCub"           then return "CC19",model end
     if first_two_words == "Asobo XCub"            then return "CC19",model end
     if first_word      == "Xcub"                  then return "CC19",model end
-    if first_word      == "Pitts"                 then return "PTS2",model end
     if first_two_words == "Orbis Asobo"           then return "Orbis",model end
     if first_two_words == "Asobo Savage"          then return "SAVG",model end
     if first_two_words == "Savage Shock"          then return "Cub",model end
@@ -98,7 +104,7 @@ local function get_make_model(aircraft)
     if first_two_words == "Grumman Goose"         then return "G21A",model end
     if first_two_words == "Curtiss JN-4D"         then return "JN4D",model end
     if first_two_words == "Spirit Of"             then return "Spirit",model end
-    if first_word      == "Velocity"              then return "VELO",model end
+    if first_word      == "Volocity"              then return "VOLO",model end
     if first_two_words == "Asobo Cabri"           then return "Cabri",model end
     if first_word      == "Wright"                then return "Wright",model end
 end

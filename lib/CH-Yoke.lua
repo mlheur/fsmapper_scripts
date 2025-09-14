@@ -31,7 +31,7 @@ dev.presets.C700    = nil -- has unique values from other jumbo jets
 -- dev.presets.Cabri   =
 dev.presets.CC19    = "gaVariProp"
 dev.presets.CP10    = "gaFixedProp"
-dev.presets.Cub     = "gaFixedProp"
+dev.presets.Cub     = nil -- Throttle, Choke
 dev.presets.DA40    = "automatic"
 dev.presets.DA62    = "automatic2"
 dev.presets.DC3     = "gaVariProp2"
@@ -45,16 +45,17 @@ dev.presets.FDCT    = nil -- has choke and brakes levers
 dev.presets.G21A    = "gaVariProp2"
 dev.presets.H4      = nil -- unique engine controls
 dev.presets.JN4D    = nil -- mixture action is reversed
--- dev.presets.MXS     =
--- dev.presets.Orbis   =
--- dev.presets.PC6     =
--- dev.presets.PIVI    =
--- dev.presets.PTS2    =
--- dev.presets.S22T    =
--- dev.presets.SAVG    =
--- dev.presets.Spirit  =
--- dev.presets.TBM9    =
--- dev.presets.VELO    =
+-- dev.presets.MXS     = nil -- glider
+-- dev.presets.Orbis   = nil -- not flyable, static display
+dev.presets.PC6     = "TurboProp"
+dev.presets.PIVI    = nil -- Throttle, Prop, Choke
+dev.presets.PTS1    = "gaFixedProp"
+dev.presets.PTS2    = "gaVariProp"
+dev.presets.S22T    = nil
+dev.presets.SAVG    = nil -- Zlin Aviation Savage Cub (little yellow thing)
+dev.presets.Spirit  = nil
+dev.presets.TBM9    = nil
+-- dev.presets.VOLO    =
 -- dev.presets.VL3     =
 -- dev.presets.Wright  =
 
@@ -162,6 +163,23 @@ dev.map.rx.change.C700 = action_mgr.ENGINE_Throttle_Reducer[2]
 dev.map.ry.change.C700 = action_mgr.SPOILERS_lever_16k
 
 
+dev.profiles.Cub = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.profiles.Cub.modifiers = {
+    {
+        name = 'rx',
+        modtype = 'quantized_stick',
+        modparam = {
+            repeat_mode = false,
+            activate_threshold = 48000,
+            release_threshold  = 48001,
+        }
+    },
+}
+dev.map.z.change.Cub = action_mgr.ENGINE_Throttle[1]
+dev.map.rx.positive.Cub = action_mgr.ENGINE_Choke_on
+dev.map.rx.negative.Cub = action_mgr.ENGINE_Choke_off
+
+
 dev.profiles.Darkstar = { name=dev.name, type=dev.type, identifier=dev.identifier }
 dev.profiles.Darkstar.modifiers = {
     { name = "button7", modtype = 'button' },
@@ -244,6 +262,65 @@ dev.map.z.change.H4 = action_mgr.ENGINE_Throttle_H4
 dev.profiles.JN4D = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
 dev.map.z.change.JN4D = action_mgr.ENGINE_Throttle[1]
 dev.map.rx.change.JN4D = action_mgr.FUEL_Mixture_inverted[1]
+
+
+dev.profiles.PIVI = { name=dev.name, type=dev.type, identifier=dev.identifier }
+dev.profiles.PIVI.modifiers = {
+    {
+        name = 'rx',
+        modtype = 'quantized_stick',
+        modparam = {
+            repeat_mode = false,
+            activate_threshold = 48000,
+            release_threshold  = 48001,
+        }
+    },
+}
+dev.map.z.change.PIVI = action_mgr.ENGINE_Throttle[1]
+dev.map.ry.change.PIVI = action_mgr.ENGINE_Propeller[1]
+dev.map.rx.positive.PIVI = action_mgr.ENGINE_Choke_on
+dev.map.rx.negative.PIVI = action_mgr.ENGINE_Choke_off
+
+
+dev.profiles.S22T = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.S22T = action_mgr.ENGINE_Throttle[1]
+dev.map.rx.change.S22T = action_mgr.FUEL_Mixture[0]
+
+
+dev.profiles.SAVG = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.SAVG = action_mgr.ENGINE_Throttle[1]
+dev.map.ry.change.SAVG = action_mgr.PASSENGER_Cabin_Heat[1]
+dev.map.rx.change.SAVG = action_mgr.ENGINE_Choke[100]
+
+
+dev.profiles.Spirit = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.Spirit = action_mgr.ENGINE_Throttle[1]
+dev.map.ry.change.Spirit = action_mgr.DEICE_Engine_inverted[1]
+dev.map.rx.change.Spirit = action_mgr.FUEL_Mixture[1]
+
+
+dev.profiles.TBM9 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.TBM9 = function(evid,args)
+    pct = 1-(((50000+args)/100000)/1.15)
+    msfs.execute_input_event("ENGINE_Throttle",pct)
+    msfs.execute_input_event("ENGINE_Throttle_Feathering",0.0)
+end
+dev.map.ry.change.TBM9 = function(evid,args)
+    if args >= -50000 and args < -20000 then
+        msfs.execute_input_event("ENGINE_Throttle",1.0)
+    elseif args >= -20000 and args < 20000 then
+        msfs.execute_input_event("ENGINE_Throttle",0.5)
+    elseif args >= 20000 and args <= 50000 then
+        msfs.execute_input_event("ENGINE_Throttle",0.0)
+    end
+    msfs.execute_input_event("ENGINE_Throttle_Feathering",1.0)
+end
+dev.map.rx.change.TBM9 = function(evid,args)
+    pct = (1-(1/1.15))*((-50000+args)/-100000)
+    if pct < 0.01 then pct = 0.01 end
+    msfs.execute_input_event("ENGINE_Throttle",pct)
+    msfs.execute_input_event("ENGINE_Throttle_Feathering",0.0)
+end
 
 
 return dev
