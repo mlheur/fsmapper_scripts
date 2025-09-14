@@ -4,6 +4,12 @@ dev.name = "CH-Yoke"
 dev.type = "dinput"
 dev.identifier = {guid = '{1DDD4F20-8387-11ED-8001-444553540000}'}
 
+-- X & Y axes are the yoke/stick for roll & pitch
+-- Z axis is the barrel-shaped throttle lever
+-- RY axis is the squarish crown-shaped prop lever
+-- RX axis is the round spikey mixture lever
+
+
 --$ awk '{for (i=1;i<=NF;i++){if($i=="return"){print $(i+1)}}}' planes.lua | awk -F, '{print $1}' | sort -u | grep -v '^mgr$' | xargs echo
 --A20N A320 A5 B350 B748 B78X BE36 BE58 Bell407 C152 C172 C208 C25C C700 Cabri CC19 CP10 Cub DA40 DA62 Darkstar DC3 DGF DHC2 DR40 DV20 E300 FA18E FDCT G21A H4 JN4D MXS Orbis PC6 PIVI PTS2 S22T SAVG Spirit TBM9 VELO VL3 Wright
 
@@ -32,13 +38,13 @@ dev.presets.DC3     = "gaVariProp2"
 -- dev.presets.DGF     = nil -- glider with engine...
 dev.presets.DHC2    = "gaVariProp"
 dev.presets.DR40    = "gaFixedProp"
-dev.presets.DV20    = nil
+dev.presets.DV20    = nil -- prop w/out mixture, carb-heat lever
 dev.presets.E300    = "gaVariProp"
-dev.presets.FA18E   = nil
--- dev.presets.FDCT    =
+dev.presets.FA18E   = nil -- spoilers are unique
+dev.presets.FDCT    = nil -- has choke and brakes levers
 dev.presets.G21A    = "gaVariProp2"
--- dev.presets.H4      =
--- dev.presets.JN4D    =
+dev.presets.H4      = nil -- unique engine controls
+dev.presets.JN4D    = nil -- mixture action is reversed
 -- dev.presets.MXS     =
 -- dev.presets.Orbis   =
 -- dev.presets.PC6     =
@@ -116,35 +122,6 @@ dev.map.ry.change.TurboProp2 = action_mgr.ENGINE_Propeller_feather[2]
 dev.map.rx.change.TurboProp2 = action_mgr.FUEL_Condition[2]
 
 
-dev.profiles.B748 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.B748 = action_mgr.ENGINE_Throttle[4]
-dev.map.rx.change.B748 = action_mgr.ENGINE_Throttle_Reverser[4]
-dev.map.ry.change.B748 = action_mgr.SPOILERS_lever
-
-
-dev.profiles.B78X = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.B78X = action_mgr.ENGINE_Throttle[2]
-dev.map.rx.change.B78X = action_mgr.ENGINE_Throttle_Reverser[2]
-dev.map.ry.change.B78X = action_mgr.SPOILERS_lever
-
-
-dev.profiles.C700 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.C700 = action_mgr.ENGINE_Throttle[2]
-dev.map.rx.change.C700 = action_mgr.ENGINE_Throttle_Reducer[2]
-dev.map.ry.change.C700 = action_mgr.SPOILERS_lever_16k
-
-
-dev.profiles.DV20 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.DV20 = action_mgr.ENGINE_Throttle[1]
-dev.map.rx.change.DV20 = action_mgr.DEICE_Engine[1]
-dev.map.ry.change.DV20 = action_mgr.ENGINE_Propeller[1]
-
-
-dev.profiles.C25C = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.C25C = action_mgr.ENGINE_Throttle[2]
-dev.map.ry.change.C25C = action_mgr.SPOILERS_lever_16k
-
-
 dev.profiles.A5 = { name=dev.name, type=dev.type, identifier=dev.identifier }
 dev.profiles.A5.modifiers = {
     {
@@ -162,23 +139,27 @@ dev.map.rx.positive.A5 = action_mgr.RUDDER_down
 dev.map.rx.negative.A5 = action_mgr.RUDDER_up
 
 
-dev.profiles.FA18E = { name=dev.name, type=dev.type, identifier=dev.identifier }
-dev.profiles.FA18E.modifiers = {
-    {
-        name = 'ry',
-        modtype = 'quantized_stick',
-        modparam = {
-            repeat_mode = true,
-            repeat_delay = 100,
-            repeat_interval = 100,
-            activate_threshold = 48000,
-            release_threshold  = 48001,
-        }
-    },
-}
-dev.map.z.change.FA18E = action_mgr.ENGINE_Throttle[2]
-dev.map.ry.negative.FA18E = action_mgr.SPOILERS_decrement
-dev.map.ry.positive.FA18E = action_mgr.SPOILERS_increment
+dev.profiles.B748 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.B748 = action_mgr.ENGINE_Throttle[4]
+dev.map.rx.change.B748 = action_mgr.ENGINE_Throttle_Reverser[4]
+dev.map.ry.change.B748 = action_mgr.SPOILERS_lever
+
+
+dev.profiles.B78X = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.B78X = action_mgr.ENGINE_Throttle[2]
+dev.map.rx.change.B78X = action_mgr.ENGINE_Throttle_Reverser[2]
+dev.map.ry.change.B78X = action_mgr.SPOILERS_lever
+
+
+dev.profiles.C25C = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.C25C = action_mgr.ENGINE_Throttle[2]
+dev.map.ry.change.C25C = action_mgr.SPOILERS_lever_16k
+
+
+dev.profiles.C700 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.C700 = action_mgr.ENGINE_Throttle[2]
+dev.map.rx.change.C700 = action_mgr.ENGINE_Throttle_Reducer[2]
+dev.map.ry.change.C700 = action_mgr.SPOILERS_lever_16k
 
 
 dev.profiles.Darkstar = { name=dev.name, type=dev.type, identifier=dev.identifier }
@@ -211,6 +192,58 @@ dev.map.rx.positive.Darkstar = action_mgr.SCRAM_ready
 dev.map.rx.negative.Darkstar = action_mgr.SCRAM_unready
 dev.map.button7.down.Darkstar = action_mgr.SCRAM_on
 dev.map.button8.down.Darkstar = action_mgr.SCRAM_off
+
+
+dev.profiles.DV20 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.DV20 = action_mgr.ENGINE_Throttle[1]
+dev.map.rx.change.DV20 = action_mgr.DEICE_Engine[1]
+dev.map.ry.change.DV20 = action_mgr.ENGINE_Propeller[1]
+
+
+dev.profiles.FA18E = { name=dev.name, type=dev.type, identifier=dev.identifier }
+dev.profiles.FA18E.modifiers = {
+    {
+        name = 'ry',
+        modtype = 'quantized_stick',
+        modparam = {
+            repeat_mode = true,
+            repeat_delay = 100,
+            repeat_interval = 100,
+            activate_threshold = 49500,
+            release_threshold  = 49501,
+        }
+    },
+}
+dev.map.z.change.FA18E = action_mgr.ENGINE_Throttle[2]
+dev.map.ry.negative.FA18E = action_mgr.SPOILERS_decrement
+dev.map.ry.positive.FA18E = action_mgr.SPOILERS_increment
+
+
+dev.profiles.FDCT = { name=dev.name, type=dev.type, identifier=dev.identifier }
+dev.profiles.FDCT.modifiers = {
+    {
+        name = 'ry',
+        modtype = 'quantized_stick',
+        modparam = {
+            repeat_mode = false,
+            activate_threshold = 48000,
+            release_threshold  = 48001,
+        }
+    },
+}
+dev.map.z.change.FDCT = action_mgr.ENGINE_Throttle[1]
+dev.map.ry.positive.FDCT = action_mgr.ENGINE_Choke_on
+dev.map.ry.negative.FDCT = action_mgr.ENGINE_Choke_off
+dev.map.rx.change.FDCT = action_mgr.LANDING_GEAR_Brake_lever
+
+
+dev.profiles.H4 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.H4 = action_mgr.ENGINE_Throttle_H4
+
+
+dev.profiles.JN4D = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.JN4D = action_mgr.ENGINE_Throttle[1]
+dev.map.rx.change.JN4D = action_mgr.FUEL_Mixture_inverted[1]
 
 
 return dev

@@ -42,6 +42,17 @@ mgr.ENGINE_Throttle = {}
 mgr.ENGINE_Throttle[1] = iterator_generator("ENGINE_Throttle_","",1,inverse_mixmax_percent)
 mgr.ENGINE_Throttle[2] = iterator_generator("ENGINE_Throttle_","",2,inverse_mixmax_percent)
 mgr.ENGINE_Throttle[4] = iterator_generator("ENGINE_Throttle_","",4,inverse_mixmax_percent)
+mgr.ENGINE_Throttle_H4 = function(evid,args)
+    value = inverse_mixmax_percent(args)
+    msfs.execute_input_event("ENGINE_Throttle_1",value)
+--    msfs.execute_input_event("ENGINE_Throttle_2",value)
+    msfs.execute_input_event("ENGINE_Throttle_3",value)
+--    msfs.execute_input_event("ENGINE_Throttle_4",value)
+    msfs.execute_input_event("ENGINE_Throttle_5",value)
+--    msfs.execute_input_event("ENGINE_Throttle_6",value)
+    msfs.execute_input_event("ENGINE_Throttle_7",value)
+--    msfs.execute_input_event("ENGINE_Throttle_8",value)
+end
 
 
 mgr.ENGINE_Throttle_Reverser = {}
@@ -57,6 +68,10 @@ mgr.ENGINE_Throttle_Reducer[4] = iterator_generator("ENGINE_Throttle_","",4,thro
 mgr.FUEL_Mixture = {}
 mgr.FUEL_Mixture[1] = iterator_generator("FUEL_Mixture_","",1,inverse_mixmax_percent)
 mgr.FUEL_Mixture[2] = iterator_generator("FUEL_Mixture_","",2,inverse_mixmax_percent)
+
+
+mgr.FUEL_Mixture_inverted = {}
+mgr.FUEL_Mixture_inverted[1] = iterator_generator("FUEL_Mixture_","",1,mixmax_percent)
 
 
 mgr.FUEL_Condition = {}
@@ -110,5 +125,13 @@ mgr.RUDDER_down = msfs.input_event_executer('HANDLING_Water_Rudder', 1)
 mgr.DEICE_Engine = {}
 mgr.DEICE_Engine[1] = iterator_generator("DEICE_Engine_","",1,mixmax_percent)
 
+
+mgr.ENGINE_Choke_off = msfs.input_event_executer('ENGINE_Choke_1', 0)
+mgr.ENGINE_Choke_on  = msfs.input_event_executer('ENGINE_Choke_1', 1)
+
+
+mgr.LANDING_GEAR_Brake_lever = function(evid,args)
+    msfs.execute_input_event('LANDING_GEAR_Brake', -1 + 2 * mixmax_percent(args))
+end
 
 return mgr
