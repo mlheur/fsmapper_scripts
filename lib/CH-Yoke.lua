@@ -22,13 +22,13 @@ dev.presets.B748    = nil -- has unique values from other jumbo jets
 dev.presets.B78X    = nil -- has unique values from other jumbo jets
 dev.presets.BE36    = "gaVariProp"
 dev.presets.BE58    = "gaVariProp2"
--- dev.presets.Bell407 =
+-- dev.presets.Bell407 = -- helicopter
 dev.presets.C152    = "gaFixedProp"
 dev.presets.C172    = "gaFixedProp"
 dev.presets.C208    = "TurboProp"
 dev.presets.C25C    = nil -- has unique values from other jumbo jets
 dev.presets.C700    = nil -- has unique values from other jumbo jets
--- dev.presets.Cabri   =
+-- dev.presets.Cabri   = -- helicopter
 dev.presets.CC19    = "gaVariProp"
 dev.presets.CP10    = "gaFixedProp"
 dev.presets.Cub     = nil -- Throttle, Choke
@@ -46,7 +46,7 @@ dev.presets.G21A    = "gaVariProp2"
 dev.presets.H4      = nil -- unique engine controls
 dev.presets.JN4D    = nil -- mixture action is reversed
 -- dev.presets.MXS     = nil -- glider
--- dev.presets.Orbis   = nil -- not flyable, static display
+dev.presets.Orbis   = nil -- not flyable, static display
 dev.presets.PC6     = "TurboProp"
 dev.presets.PIVI    = nil -- Throttle, Prop, Choke
 dev.presets.PTS1    = "gaFixedProp"
@@ -55,9 +55,9 @@ dev.presets.S22T    = nil
 dev.presets.SAVG    = nil -- Zlin Aviation Savage Cub (little yellow thing)
 dev.presets.Spirit  = nil
 dev.presets.TBM9    = nil
--- dev.presets.VOLO    =
--- dev.presets.VL3     =
--- dev.presets.Wright  =
+-- dev.presets.VOLO    = -- drone
+dev.presets.VL3     = nil
+dev.presets.Wright  = nil
 
 dev.profiles = {}
 
@@ -321,6 +321,11 @@ dev.map.rx.change.TBM9 = function(evid,args)
     msfs.execute_input_event("ENGINE_Throttle",pct)
     msfs.execute_input_event("ENGINE_Throttle_Feathering",0.0)
 end
+
+
+dev.profiles.VL3 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.VL3 = action_mgr.ENGINE_Throttle[1]
+dev.map.rx.change.VL3 = action_mgr.ENGINE_Choke[100]
 
 
 return dev
