@@ -172,7 +172,6 @@ mgr.ENGINE_Collective_Lever = function(evid,args)
     msfs.execute_input_event('ENGINE_Collective_Lever', inverse_mixmax_percent(args))
 end
 mgr.ENGINE_Collective_Axis = function(evid,args)
-    mapper.print("Collective Axis str=["..str.."]")
     msfs.mfwasm.execute_rpn( math.floor(-16384+32768*inverse_mixmax_percent(args)) .. " (>K:AXIS_COLLECTIVE_SET)" )
 end
 mgr.THROTTLE_CollectiveGrip = function(evid,args)
