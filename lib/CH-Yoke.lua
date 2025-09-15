@@ -11,7 +11,7 @@ dev.identifier = {guid = '{1DDD4F20-8387-11ED-8001-444553540000}'}
 
 
 --$ awk '{for (i=1;i<=NF;i++){if($i=="return"){print $(i+1)}}}' planes.lua | awk -F, '{print $1}' | sort -u | grep -v '^mgr$' | xargs echo
---A20N A320 A5 B350 B748 B78X BE36 BE58 Bell407 C152 C172 C208 C25C C700 Cabri CC19 CP10 Cub DA40 DA62 Darkstar DC3 DGF DHC2 DR40 DV20 E300 FA18E FDCT G21A H4 JN4D MXS Orbis PC6 PIVI PTS2 S22T SAVG Spirit TBM9 VELO VL3 Wright
+--A20N A320 A5 B350 B748 B78X BE36 BE58 B407 C152 C172 C208 C25C C700 Cabri CC19 CP10 Cub DA40 DA62 Darkstar DC3 DGF DHC2 DR40 DV20 E300 FA18E FDCT G21A H4 JN4D MXS Orbis PC6 PIVI PTS2 S22T SAVG Spirit TBM9 VELO VL3 Wright
 
 dev.presets = {}
 
@@ -22,13 +22,13 @@ dev.presets.B748    = nil -- has unique values from other jumbo jets
 dev.presets.B78X    = nil -- has unique values from other jumbo jets
 dev.presets.BE36    = "gaVariProp"
 dev.presets.BE58    = "gaVariProp2"
--- dev.presets.Bell407 = -- helicopter
+dev.presets.B407    = nil -- helicopter
 dev.presets.C152    = "gaFixedProp"
 dev.presets.C172    = "gaFixedProp"
 dev.presets.C208    = "TurboProp"
 dev.presets.C25C    = nil -- has unique values from other jumbo jets
 dev.presets.C700    = nil -- has unique values from other jumbo jets
--- dev.presets.Cabri   = -- helicopter
+dev.presets.Cabri   = nil -- helicopter
 dev.presets.CC19    = "gaVariProp"
 dev.presets.CP10    = "gaFixedProp"
 dev.presets.Cub     = nil -- Throttle, Choke
@@ -58,6 +58,7 @@ dev.presets.TBM9    = nil
 -- dev.presets.VOLO    = -- drone
 dev.presets.VL3     = nil
 dev.presets.Wright  = nil
+
 
 dev.profiles = {}
 
@@ -140,6 +141,11 @@ dev.map.rx.positive.A5 = action_mgr.RUDDER_down
 dev.map.rx.negative.A5 = action_mgr.RUDDER_up
 
 
+dev.profiles.B407 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.B407 = action_mgr.ENGINE_Collective_Axis
+dev.map.ry.change.B407 = action_mgr.THROTTLE_CollectiveGrip
+
+
 dev.profiles.B748 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
 dev.map.z.change.B748 = action_mgr.ENGINE_Throttle[4]
 dev.map.rx.change.B748 = action_mgr.ENGINE_Throttle_Reverser[4]
@@ -161,6 +167,12 @@ dev.profiles.C700 = { name=dev.name, type=dev.type, identifier=dev.identifier, m
 dev.map.z.change.C700 = action_mgr.ENGINE_Throttle[2]
 dev.map.rx.change.C700 = action_mgr.ENGINE_Throttle_Reducer[2]
 dev.map.ry.change.C700 = action_mgr.SPOILERS_lever_16k
+
+
+dev.profiles.Cabri = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
+dev.map.z.change.Cabri = action_mgr.ENGINE_Collective_Lever
+dev.map.ry.change.Cabri = action_mgr.ENGINE_Propeller[1]
+dev.map.rx.change.Cabri = action_mgr.FUEL_Mixture[1]
 
 
 dev.profiles.Cub = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }

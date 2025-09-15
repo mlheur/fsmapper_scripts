@@ -51,7 +51,7 @@ local function get_make_model(aircraft)
     
     -- GNS 530
     model = "GNS530"
-    if first_two_words == "Bell 407"              then return "Bell407",model end
+    if first_two_words == "Bell 407"              then return "B407",model end
     if first_two_words == "Blackbird Simulations" then return "DHC2",model end -- DHC-2, Beaver
     if first_two_words == "Hercules H-4"          then return "H4",model end
     

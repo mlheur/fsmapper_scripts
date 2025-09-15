@@ -168,4 +168,17 @@ mgr.PASSENGER_Cabin_Heat = {}
 mgr.PASSENGER_Cabin_Heat[1] = iterator_generator("PASSENGER_Cabin_Heat_","",1,mixmax_percent_100)
 
 
+mgr.ENGINE_Collective_Lever = function(evid,args)
+    msfs.execute_input_event('ENGINE_Collective_Lever', inverse_mixmax_percent(args))
+end
+mgr.ENGINE_Collective_Axis = function(evid,args)
+    mapper.print("Collective Axis str=["..str.."]")
+    msfs.mfwasm.execute_rpn( math.floor(-16384+32768*inverse_mixmax_percent(args)) .. " (>K:AXIS_COLLECTIVE_SET)" )
+end
+mgr.THROTTLE_CollectiveGrip = function(evid,args)
+    msfs.mfwasm.execute_rpn(math.floor(100*inverse_mixmax_percent(args)) .. " (>L:CollectiveGrip,percent)")
+end
+
+
+
 return mgr
