@@ -129,6 +129,12 @@ function mgr.add_mappings(aircraft)
         profile = adopt_preset(model,device)
         device_mgr.add_mappings(profile,device)
     end
+    if not make then return end
+    sLibFile = "planes/"..make
+    hAircraft = require(sLibFile)
+    if hAircraft then
+        hAircraft.add_mappings(F710,Yoke)
+    end
 end
 
 return mgr
