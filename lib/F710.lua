@@ -7,6 +7,14 @@ dev.identifier = {name = 'Controller (Wireless Gamepad F710)'}
 dev.profiles = {}
 dev.profiles[0] = { name=dev.name, type=dev.type, identifier=dev.identifier }
 dev.profiles[0].modifiers = {
+    {name = 'button1',  modtype = 'button'},
+    {name = 'button2',  modtype = 'button'},
+    {name = 'button3',  modtype = 'button'},
+    {name = 'button4',  modtype = 'button'},
+    {name = 'button5',  modtype = 'button'},
+    {name = 'button6',  modtype = 'button'},
+    {name = 'button7',  modtype = 'button'},
+    {name = 'button8',  modtype = 'button'},
     {name = 'button9',  modtype = 'button'},
     {name = 'button10', modtype = 'button'},
     {name = 'x',        modtype = 'quantized_stick', modparam = { repeat_interval = 100, } },
