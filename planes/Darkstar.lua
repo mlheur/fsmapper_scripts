@@ -1,5 +1,7 @@
 local Darkstar = {}
 
+
+-- build functions for simple toggles
 Darkstar.tStateTrackers = {
     battery     = { iValue = 0, sSystem = "ELECTRICAL_Battery_1" },
     beacons     = { iValue = 0, sSystem = {'LIGHTING_BEACON_1','LIGHTING_BEACON_2','LIGHTING_NAV_1'}  },
@@ -7,8 +9,6 @@ Darkstar.tStateTrackers = {
     alternator1 = { iValue = 0, sSystem = "ELECTRICAL_Alternator_1"  },
     alternator2 = { iValue = 0, sSystem = "ELECTRICAL_Alternator_2"  },
 }
-
--- build functions for simple toggles
 for _,sTrackerName in ipairs({"battery","beacons","landlights","alternator1","alternator2"}) do
     sFnName = "toggle_"..sTrackerName
     Darkstar[sFnName] = function() action_mgr.toggle(Darkstar.tStateTrackers[sTrackerName]) end
@@ -49,6 +49,22 @@ function Darkstar.onGeneratorHat(evid,args)
     end
 end
 
+function Darkstar.onTrimHat(evid,args)
+--  mapper.print("Darkstar:onTrimHat() args=["..(args or "nil").."]")
+    iDirection = args / 9000
+    if args < 0 then
+        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 4)
+    elseif iDirection == 0 then
+        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 3)
+    elseif iDirection == 1 then
+        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 1)
+    elseif iDirection == 2 then
+        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 2)
+    elseif iDirection == 3 then
+        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 0)
+    end
+end
+
 function Darkstar.add_mappings(F710,Yoke)
     local tActionEventMap = {
         toggle_battery    = F710.device.events.button7.down,
@@ -65,6 +81,7 @@ function Darkstar.add_mappings(F710,Yoke)
         engine2_state1    = F710.device.events.rx.positive,
         engine2_state2    = F710.device.events.ry.positive,
         onGeneratorHat    = F710.device.events.pov1.change,
+        onTrimHat         = Yoke.device.events.pov1.change,
     }
     local lMappings = {}
     for callback,eventid in pairs(tActionEventMap) do
