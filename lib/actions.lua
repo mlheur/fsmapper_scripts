@@ -178,6 +178,18 @@ mgr.THROTTLE_CollectiveGrip = function(evid,args)
     msfs.mfwasm.execute_rpn(math.floor(100*inverse_mixmax_percent(args)) .. " (>L:CollectiveGrip,percent)")
 end
 
+function mgr.toggle(tTracker)
+    tTracker.iValue = ((tTracker.iValue + 1) % 2)
+    sType = type(tTracker.sSystem)
+    if sType == "table" then
+        for _,sEvent in ipairs(tTracker.sSystem) do
+            msfs.execute_input_event(sEvent, tTracker.iValue)
+        end
+    else
+        msfs.execute_input_event(tTracker.sSystem, tTracker.iValue)
+    end
+end
+
 
 
 return mgr
