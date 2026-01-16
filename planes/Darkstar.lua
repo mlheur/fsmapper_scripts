@@ -24,11 +24,11 @@ for _,sVerb in ipairs({"Start","Stop"}) do
 end
 
 -- Build functions for engineX_stateY
-for X = 1, 2 do
-    sSwitch = "ENGINE_Engine_Switch_" .. X
-    for Y = 0, 2 do
-        sFnName = "engine"..X.."_state"..Y
-        Darkstar[sFnName] = msfs.input_event_executer(sSwitch,Y)
+for iEngine = 1, 2 do
+    sSwitch = "ENGINE_Engine_Switch_" .. iEngine
+    for iState = 0, 2 do
+        sFnName = "engine"..iEngine.."_state"..iState
+        Darkstar[sFnName] = msfs.input_event_executer(sSwitch,iState)
     end
 end
 
