@@ -131,7 +131,10 @@ function mgr.add_mappings(aircraft)
     end
     if not make then return end
     sLibFile = "planes/"..make
-    hAircraft = require(sLibFile)
+    hLibFile = io.open(sLibFile,"r")
+    if hLibFile then
+        hAircraft = require(sLibFile)
+    end
     if hAircraft then
         hAircraft.add_mappings(F710,Yoke)
     end
