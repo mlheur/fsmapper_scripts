@@ -120,6 +120,10 @@ local function adopt_preset(profile,device)
     return profile
 end
 
+function tryImport(sFile)
+    return require(sFile)
+end
+
 function mgr.add_mappings(aircraft)
     make,model = get_make_model(aircraft)
     for _,device in ipairs({F710,Yoke}) do
@@ -130,12 +134,8 @@ function mgr.add_mappings(aircraft)
         device_mgr.add_mappings(profile,device)
     end
     if not make then return end
-    sLibFile = "planes/"..make
-    hLibFile = io.open(sLibFile,"r")
-    if hLibFile then
-        hAircraft = require(sLibFile)
-    end
-    if hAircraft then
+    bResult,hAircraft = pcall(tryImport, "planes/"..make)
+    if bResult then
         hAircraft.add_mappings(F710,Yoke)
     end
 end
