@@ -85,7 +85,6 @@ function Darkstar.add_mappings(F710,Yoke)
     }
     local lMappings = {}
     for callback,eventid in pairs(tActionEventMap) do
-        local fn = 
         mapper.print("Darkstar:add_mappings() callback=["..(callback or "nil").."] eventid=["..(eventid or "nil").."]")
         table.insert(lMappings,{event=eventid,action=Darkstar[callback]})
     end
