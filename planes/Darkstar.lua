@@ -1,4 +1,5 @@
 local Darkstar = {}
+Darkstar.name = "Darkstar"
 
 
 -- build functions for simple toggles

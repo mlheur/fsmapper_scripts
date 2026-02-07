@@ -1,96 +1,6 @@
-local dev = {}
-
-dev.name = "CH-Yoke"
-dev.type = "dinput"
-dev.identifier = {guid = '{1DDD4F20-8387-11ED-8001-444553540000}'}
-
--- X & Y axes are the yoke/stick for roll & pitch
--- Z axis is the barrel-shaped throttle lever
--- RY axis is the squarish crown-shaped prop lever
--- RX axis is the round spikey mixture lever
 
 
---$ awk '{for (i=1;i<=NF;i++){if($i=="return"){print $(i+1)}}}' planes.lua | awk -F, '{print $1}' | sort -u | grep -v '^mgr$' | xargs echo
---A20N A320 A5 B350 B748 B78X BE36 BE58 B407 C152 C172 C208 C25C C700 Cabri CC19 CP10 Cub DA40 DA62 Darkstar DC3 DGF DHC2 DR40 DV20 E300 FA18E FDCT G21A H4 JN4D MXS Orbis PC6 PIVI PTS2 S22T SAVG Spirit TBM9 VELO VL3 Wright
-
-dev.presets = {}
-
-dev.presets.A20N    = nil -- has a broken throttle complained about in many forums
-dev.presets.A320    = "C700"
-dev.presets.B350    = "TurboProp2"
-dev.presets.B748    = nil -- has unique values from other jumbo jets
-dev.presets.B78X    = nil -- has unique values from other jumbo jets
-dev.presets.BE36    = "gaVariProp"
-dev.presets.BE58    = "gaVariProp2"
-dev.presets.B407    = nil -- helicopter
-dev.presets.C152    = "gaFixedProp"
-dev.presets.C172    = "gaFixedProp"
-dev.presets.C208    = "TurboProp"
-dev.presets.C25C    = nil -- has unique values from other jumbo jets
-dev.presets.C700    = nil -- has unique values from other jumbo jets
-dev.presets.Cabri   = nil -- helicopter
-dev.presets.CC19    = "gaVariProp"
-dev.presets.CP10    = "gaFixedProp"
-dev.presets.Cub     = nil -- Throttle, Choke
-dev.presets.DA40    = "automatic"
-dev.presets.DA62    = "automatic2"
-dev.presets.DC3     = "gaVariProp2"
--- dev.presets.DGF     = nil -- glider with engine...
-dev.presets.DHC2    = "gaVariProp"
-dev.presets.DR40    = "gaFixedProp"
-dev.presets.DV20    = nil -- prop w/out mixture, carb-heat lever
-dev.presets.E300    = "gaVariProp"
-dev.presets.FA18E   = nil -- spoilers are unique
-dev.presets.FDCT    = nil -- has choke and brakes levers
-dev.presets.G21A    = "gaVariProp2"
-dev.presets.H4      = nil -- unique engine controls
-dev.presets.JN4D    = nil -- mixture action is reversed
--- dev.presets.MXS     = nil -- glider
-dev.presets.Orbis   = nil -- not flyable, static display
-dev.presets.PC6     = "TurboProp"
-dev.presets.PIVI    = nil -- Throttle, Prop, Choke
-dev.presets.PTS1    = "gaFixedProp"
-dev.presets.PTS2    = "gaVariProp"
-dev.presets.S22T    = nil
-dev.presets.SAVG    = nil -- Zlin Aviation Savage Cub (little yellow thing)
-dev.presets.Spirit  = nil
-dev.presets.TBM9    = nil
--- dev.presets.VOLO    = -- drone
-dev.presets.VL3     = nil
-dev.presets.Wright  = nil
-
-
-dev.profiles = {}
-
-dev.map = {}
-
-dev.map.z = {}
-dev.map.z.change = {}
-
-dev.map.rx = {}
-dev.map.rx.positive = {}
-dev.map.rx.negative = {}
-dev.map.rx.change = {}
-
-dev.map.ry = {}
-dev.map.ry.positive = {}
-dev.map.ry.negative = {}
-dev.map.ry.change = {}
-
-dev.map.button7 = {}
-dev.map.button7.down = {}
-
-dev.map.button8 = {}
-dev.map.button8.down = {}
-
-
-dev.profiles[0] = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-
-
-dev.profiles.gaFixedProp = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.gaFixedProp = action_mgr.ENGINE_Throttle[1]
-dev.map.rx.change.gaFixedProp = action_mgr.FUEL_Mixture[1]
-
+-- vvvvvvvvvvvvvvvvv Old Code vvvvvvvvvvvvvvvv
 
 dev.profiles.automatic = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
 dev.map.z.change.automatic = action_mgr.ENGINE_Throttle[1]
@@ -338,6 +248,3 @@ end
 dev.profiles.VL3 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
 dev.map.z.change.VL3 = action_mgr.ENGINE_Throttle[1]
 dev.map.rx.change.VL3 = action_mgr.ENGINE_Choke[100]
-
-
-return dev

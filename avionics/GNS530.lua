@@ -1,0 +1,11 @@
+
+F710.map.x.positive.GNS530 = msfs.mfwasm.rpn_executer("(>H:AS530_LeftSmallKnob_Right)")
+F710.map.x.negative.GNS530 = msfs.mfwasm.rpn_executer("(>H:AS530_LeftSmallKnob_Left)")
+F710.map.y.positive.GNS530 = msfs.mfwasm.rpn_executer("(>H:AS530_LeftLargeKnob_Right)")
+F710.map.y.negative.GNS530 = msfs.mfwasm.rpn_executer("(>H:AS530_LeftLargeKnob_Left)")
+F710.map.rx.positive.GNS530 = msfs.mfwasm.rpn_executer("(>H:AS530_RightSmallKnob_Right)")
+F710.map.rx.negative.GNS530 = msfs.mfwasm.rpn_executer("(>H:AS530_RightSmallKnob_Left)")
+F710.map.ry.positive.GNS530 = msfs.mfwasm.rpn_executer("(>H:AS530_RightLargeKnob_Right)")
+F710.map.ry.negative.GNS530 = msfs.mfwasm.rpn_executer("(>H:AS530_RightLargeKnob_Left)")
+F710.map.button9.down.GNS530 = msfs.mfwasm.rpn_executer("(>H:AS530_LeftSmallKnob_Push)")
+F710.map.button10.down.GNS530 = msfs.mfwasm.rpn_executer("(>H:AS530_RightSmallKnob_Push)")

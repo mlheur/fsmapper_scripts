@@ -190,6 +190,4 @@ function mgr.toggle(tTracker)
     end
 end
 
-
-
 return mgr
