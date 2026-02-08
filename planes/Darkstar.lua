@@ -1,6 +1,28 @@
 local Darkstar = {}
-Darkstar.name = "Darkstar"
 
+Darkstar.tModifiers = {}
+Darkstar.tModifiers["CHYoke"] = {
+    { name = "button7", modtype = 'button' },
+    { name = "button8", modtype = 'button' },
+    {
+        name = 'ry',
+        modtype = 'quantized_stick',
+        modparam = {
+            repeat_mode = false,
+            activate_threshold = 48000,
+            release_threshold  = 48001,
+        }
+    },
+    {
+        name = 'rx',
+        modtype = 'quantized_stick',
+        modparam = {
+            repeat_mode = false,
+            activate_threshold = 48000,
+            release_threshold  = 48001,
+        }
+    },
+}
 
 -- build functions for simple toggles
 Darkstar.tStateTrackers = {
@@ -12,7 +34,7 @@ Darkstar.tStateTrackers = {
 }
 for _,sTrackerName in ipairs({"battery","beacons","landlights","alternator1","alternator2"}) do
     sFnName = "toggle_"..sTrackerName
-    Darkstar[sFnName] = function() action_mgr.toggle(Darkstar.tStateTrackers[sTrackerName]) end
+    Darkstar[sFnName] = function() tManagers["Action"].toggle(Darkstar.tStateTrackers[sTrackerName]) end
 end
 
 -- Build functions for APU_sVerb_sState
@@ -66,30 +88,59 @@ function Darkstar.onTrimHat(evid,args)
     end
 end
 
-function Darkstar.add_mappings(F710,Yoke)
-    local tActionEventMap = {
-        toggle_battery    = F710.device.events.button7.down,
-        toggle_beacons    = F710.device.events.button1.down,
-        toggle_landlights = F710.device.events.button4.down,
-        APU_Start_press   = F710.device.events.button3.down,
-        APU_Start_release = F710.device.events.button3.up,
-        APU_Stop_press    = F710.device.events.button2.down,
-        APU_Stop_release  = F710.device.events.button2.up,
-        engine1_state0    = F710.device.events.y.negative,
-        engine1_state1    = F710.device.events.x.negative,
-        engine1_state2    = F710.device.events.y.positive,
-        engine2_state0    = F710.device.events.ry.negative,
-        engine2_state1    = F710.device.events.rx.positive,
-        engine2_state2    = F710.device.events.ry.positive,
-        onGeneratorHat    = F710.device.events.pov1.change,
-        onTrimHat         = Yoke.device.events.pov1.change,
-    }
-    local lMappings = {}
-    for callback,eventid in pairs(tActionEventMap) do
-        mapper.print("Darkstar:add_mappings() callback=["..(callback or "nil").."] eventid=["..(eventid or "nil").."]")
-        table.insert(lMappings,{event=eventid,action=Darkstar[callback]})
+
+function Darkstar.SCRAM_ready(nEventID,tArgs)
+    msfs.execute_input_event('ELECTRICAL_Fuel_Cell', 1)
+    msfs.execute_input_event('COMMON_Cover_Transition', 0)
+end
+function Darkstar.SCRAM_unready(nEventID,tArgs)
+    msfs.execute_input_event('ENGINE_Transition', 0)
+    msfs.execute_input_event('ELECTRICAL_Fuel_Cell', 1)
+    msfs.execute_input_event('COMMON_Cover_Transition', 1)
+end
+Darkstar.SCRAM_on     = msfs.input_event_executer('ENGINE_Transition', 1)
+Darkstar.SCRAM_off    = msfs.input_event_executer('ENGINE_Transition', 0)
+Darkstar.SPOILERS_off = msfs.input_event_executer('HANDLING_Spoilers', 0)
+Darkstar.SPOILERS_on  = msfs.input_event_executer('HANDLING_Spoilers', 1)
+
+
+
+function Darkstar.applyControllerActions(tEventActionMap,hAircraft,sController,hController,tEventIDs)
+    mapper.print("Darkstar:applyControllerActions() for sController=["..sController.."]")
+    if sController == "F710" then
+        tEventActionMap[tEventIDs.button7.down] = Darkstar.toggle_battery
+        tEventActionMap[tEventIDs.button1.down] = Darkstar.toggle_beacons
+        tEventActionMap[tEventIDs.button4.down] = Darkstar.toggle_landlights
+
+        mapper.print("Setting F710 button3 down nEventID=["..tEventIDs.button3.down.."] to APU_Start_press")
+        tEventActionMap[tEventIDs.button3.down] = Darkstar.APU_Start_press
+        tEventActionMap[tEventIDs.button3.up]   = Darkstar.APU_Start_release
+        tEventActionMap[tEventIDs.button2.down] = Darkstar.APU_Stop_press
+        tEventActionMap[tEventIDs.button2.up]   = Darkstar.APU_Stop_release
+
+        tEventActionMap[tEventIDs.y.negative]   = Darkstar.engine1_state0
+        tEventActionMap[tEventIDs.x.positive]   = Darkstar.engine1_state1
+        tEventActionMap[tEventIDs.x.negative]   = Darkstar.engine1_state1
+        tEventActionMap[tEventIDs.y.positive]   = Darkstar.engine1_state2
+
+        tEventActionMap[tEventIDs.ry.negative]  = Darkstar.engine2_state0
+        tEventActionMap[tEventIDs.rx.positive]  = Darkstar.engine2_state1
+        tEventActionMap[tEventIDs.rx.negative]  = Darkstar.engine2_state1
+        tEventActionMap[tEventIDs.ry.positive]  = Darkstar.engine2_state2
+
+        tEventActionMap[tEventIDs.pov1.change]  = Darkstar.onGeneratorHat
+    elseif sController == "CHYoke" then
+
+        tEventActionMap[tEventIDs.pov1.change]  = Darkstar.onTrimHat
+
+        tEventActionMap[tEventIDs.ry.positive]  = Darkstar.SPOILERS_off
+        tEventActionMap[tEventIDs.ry.negative]  = Darkstar.SPOILERS_on
+        tEventActionMap[tEventIDs.rx.positive]  = Darkstar.SCRAM_ready
+        tEventActionMap[tEventIDs.rx.negative]  = Darkstar.SCRAM_unready
+        tEventActionMap[tEventIDs.button7.down] = Darkstar.SCRAM_on
+        tEventActionMap[tEventIDs.button8.down] = Darkstar.SCRAM_off
+
     end
-    mapper.add_secondary_mappings(lMappings)
 end
 
 return Darkstar

@@ -13,25 +13,6 @@ local function deepCopy(tInput)
     return tOut
 end
 
-local function mergeMods(tBase,tOverride)
-    local tOut = {}
-    for i,tMod in pairs(tBase) do
-        bOveridden = false
-        for j,tOver in pairs(tOverride) do
-            if tOver.name == tMod.name then
-                mapper.print()
-                bOveridden = true
-                tOut[i] = deepCopy(tOver)
-            end
-        end
-        if not bOveridden then
-            tOut[i] = deepCopy(tMod)
-        end
-    end
-    return tOut
-end
-
-
 function ControllerManager.onInit()
     ControllerManager.tCtlMgrs = {}
     ControllerManager.tHandles = {}
@@ -49,16 +30,34 @@ end
 function ControllerManager.openControllers(hAircraft)
     for i,sController in ipairs(tControllerList) do
         if ControllerManager.tCtlMgrs[sController].tTombstone then
-            tMapperDetails = deepCopy(ControllerManager.tCtlMgrs[sController].tTombstone)
-            -- N.B. deepCopy will output an empty table on a nil input, this is good.
-            tMapperDetails.modifiers = deepCopy(ControllerManager.tCtlMgrs[sController].defaultMods)
-            if hAircraft and hAircraft.tModifiers and hAircraft.tModifiers[sController] then
-                mapper.print("Merging custom controller modifiers for this aircraft")
-                tMapperDetails.modifiers = mergeMods(tMapperDetails.modifiers,hAircraft.tModifiers[sController])
-            end
+            -- Close any existing handles to the controller
             if ControllerManager.tHandles[sController] then
                 ControllerManager.tHandles[sController]:close()
                 mapper.print("Closed open controller handle for "..sController)
+            end
+            -- Get the tombstone details of the controller
+            tMapperDetails = deepCopy(ControllerManager.tCtlMgrs[sController].tTombstone)
+            -- Get the default modifiers of the controller
+            -- N.B. deepCopy will output an empty table on a nil input, this is good.
+            tMapperDetails.modifiers = deepCopy(ControllerManager.tCtlMgrs[sController].defaultMods)
+            -- Merge in any aircraft-specific modifiers for this controller
+            if hAircraft and hAircraft.tModifiers and hAircraft.tModifiers[sController] then
+                mapper.print("Merging custom "..sController.." modifiers for this aircraft")
+                for i1,v1 in pairs(hAircraft.tModifiers[sController]) do
+                    local bDidReplace = false
+                    for i2,v2 in pairs(tMapperDetails.modifiers) do
+                        if v1.name == v2.name then
+                            bDidReplace = true
+                            tMapperDetails.modifiers[i2] = deepCopy(v1)
+                            break
+                        end
+                    end
+                    if not bDidReplace then
+                        table.insert(tMapperDetails.modifiers,deepCopy(v1))
+                    end
+                end
+            end
+            for k,v in pairs(tMapperDetails.modifiers) do
             end
             ControllerManager.tHandles[sController] = mapper.device(tMapperDetails)
             ControllerManager.tEventIDs[sController] = ControllerManager.tHandles[sController].events
@@ -78,9 +77,22 @@ function ControllerManager.updateControllerActions(tEventActionMap,hAircraft)
     end
 end
 
-
-function ControllerManager.updateAvionicsActions(tEventActionMap,sAvionics)
+-- applyAvionicsKnobs(tEventActionMap,sCtl,hAvi,tEventIDs)
+function ControllerManager.updateAvionicsActions(tEventActionMap,hAircraft,sAvionics)
     if sAvionics == nil then return end
+    local bLoadedAvionics,hAvionics = pcall(tryImport,"avionics/"..sAvionics)
+    if bLoadedAvionics then
+        mapper.print("Found avionics handler for "..sAvionics)
+        for i,sController in ipairs(tControllerList) do
+            if hAvionics.tKnobSpecs and hAvionics.tKnobSpecs.sDesiredController and hAvionics.tKnobSpecs.sDesiredController == sController and ControllerManager.tCtlMgrs[sController] and ControllerManager.tCtlMgrs[sController].applyAvionicsKnobs then
+                ControllerManager.tCtlMgrs[sController].applyAvionicsKnobs(
+                    tEventActionMap,
+                    hAvionics.tKnobSpecs,
+                    ControllerManager.tEventIDs[sController]
+                )
+            end
+        end
+    end
 end
 
 
@@ -88,7 +100,13 @@ function ControllerManager.updateAircraftActions(tEventActionMap,hAircraft)
     if hAircraft == nil then return end
     for i,sController in ipairs(tControllerList) do
         if hAircraft.applyControllerActions then
-            hAircraft.applyControllerActions(tEventActionMap,sController,ControllerManager.tCtlMgrs[sController],ControllerManager.tEventIDs[sController])
+            hAircraft.applyControllerActions(
+                    tEventActionMap,
+                    hAircraft,
+                    sController,
+                    ControllerManager.tCtlMgrs[sController],
+                    ControllerManager.tEventIDs[sController]
+                )
         end
     end
 end

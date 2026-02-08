@@ -1,4 +1,0 @@
-local hAircraft = {}
-
-
-return hAircraft

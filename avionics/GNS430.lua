@@ -1,11 +1,15 @@
+hAvionics = {}
 
-F710.map.x.positive.GNS430 = msfs.mfwasm.rpn_executer("(>H:AS430_LeftSmallKnob_Right)")
-F710.map.x.negative.GNS430 = msfs.mfwasm.rpn_executer("(>H:AS430_LeftSmallKnob_Left)")
-F710.map.y.positive.GNS430 = msfs.mfwasm.rpn_executer("(>H:AS430_LeftLargeKnob_Right)")
-F710.map.y.negative.GNS430 = msfs.mfwasm.rpn_executer("(>H:AS430_LeftLargeKnob_Left)")
-F710.map.rx.positive.GNS430 = msfs.mfwasm.rpn_executer("(>H:AS430_RightSmallKnob_Right)")
-F710.map.rx.negative.GNS430 = msfs.mfwasm.rpn_executer("(>H:AS430_RightSmallKnob_Left)")
-F710.map.ry.positive.GNS430 = msfs.mfwasm.rpn_executer("(>H:AS430_RightLargeKnob_Right)")
-F710.map.ry.negative.GNS430 = msfs.mfwasm.rpn_executer("(>H:AS430_RightLargeKnob_Left)")
-F710.map.button9.down.GNS430 = msfs.mfwasm.rpn_executer("(>H:AS430_LeftSmallKnob_Push)")
-F710.map.button10.down.GNS430 = msfs.mfwasm.rpn_executer("(>H:AS430_RightSmallKnob_Push)")
+hAvionics.tKnobSpecs = {
+    sDesiredController = "F710",
+    sIdentifier        = "AS430",
+    sPilotSide         = "_Left",
+    sCoPilotSide       = "_Right",
+    sOuter             = "LargeKnob",
+    sInner             = "SmallKnob",
+    sClockwise         = "_Right",
+    sCounterClockwise  = "_Left",
+    sClick             = "_Push",
+}
+
+return hAvionics

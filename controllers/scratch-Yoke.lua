@@ -2,37 +2,6 @@
 
 -- vvvvvvvvvvvvvvvvv Old Code vvvvvvvvvvvvvvvv
 
-dev.profiles.automatic = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.automatic = action_mgr.ENGINE_Throttle[1]
-
-
-dev.profiles.automatic2 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.automatic2 = action_mgr.ENGINE_Throttle[2]
-
-
-dev.profiles.gaVariProp = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.gaVariProp = action_mgr.ENGINE_Throttle[1]
-dev.map.ry.change.gaVariProp = action_mgr.ENGINE_Propeller[1]
-dev.map.rx.change.gaVariProp = action_mgr.FUEL_Mixture[1]
-
-
-dev.profiles.gaVariProp2 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.gaVariProp2 = action_mgr.ENGINE_Throttle[2]
-dev.map.ry.change.gaVariProp2 = action_mgr.ENGINE_Propeller[2]
-dev.map.rx.change.gaVariProp2 = action_mgr.FUEL_Mixture[2]
-
-
-dev.profiles.TurboProp = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.TurboProp = action_mgr.ENGINE_Throttle[1]
-dev.map.ry.change.TurboProp = action_mgr.ENGINE_Propeller_feather[1]
-dev.map.rx.change.TurboProp = action_mgr.FUEL_Condition[1]
-
-
-dev.profiles.TurboProp2 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }
-dev.map.z.change.TurboProp2 = action_mgr.ENGINE_Throttle[2]
-dev.map.ry.change.TurboProp2 = action_mgr.ENGINE_Propeller_feather[2]
-dev.map.rx.change.TurboProp2 = action_mgr.FUEL_Condition[2]
-
 
 dev.profiles.A5 = { name=dev.name, type=dev.type, identifier=dev.identifier }
 dev.profiles.A5.modifiers = {
@@ -100,38 +69,6 @@ dev.profiles.Cub.modifiers = {
 dev.map.z.change.Cub = action_mgr.ENGINE_Throttle[1]
 dev.map.rx.positive.Cub = action_mgr.ENGINE_Choke_on
 dev.map.rx.negative.Cub = action_mgr.ENGINE_Choke_off
-
-
-dev.profiles.Darkstar = { name=dev.name, type=dev.type, identifier=dev.identifier }
-dev.profiles.Darkstar.modifiers = {
-    { name = "button7", modtype = 'button' },
-    { name = "button8", modtype = 'button' },
-    {
-        name = 'ry',
-        modtype = 'quantized_stick',
-        modparam = {
-            repeat_mode = false,
-            activate_threshold = 48000,
-            release_threshold  = 48001,
-        }
-    },
-    {
-        name = 'rx',
-        modtype = 'quantized_stick',
-        modparam = {
-            repeat_mode = false,
-            activate_threshold = 48000,
-            release_threshold  = 48001,
-        }
-    },
-}
-dev.map.z.change.Darkstar = action_mgr.ENGINE_Throttle[2]
-dev.map.ry.positive.Darkstar = action_mgr.SPOILERS_off
-dev.map.ry.negative.Darkstar = action_mgr.SPOILERS_on
-dev.map.rx.positive.Darkstar = action_mgr.SCRAM_ready
-dev.map.rx.negative.Darkstar = action_mgr.SCRAM_unready
-dev.map.button7.down.Darkstar = action_mgr.SCRAM_on
-dev.map.button8.down.Darkstar = action_mgr.SCRAM_off
 
 
 dev.profiles.DV20 = { name=dev.name, type=dev.type, identifier=dev.identifier, modifiers = {} }

@@ -112,8 +112,6 @@ mgr.ENGINE_Propeller_feather[1] = iterator_generator("ENGINE_Propeller_","",1,fe
 mgr.ENGINE_Propeller_feather[2] = iterator_generator("ENGINE_Propeller_","",2,feather_25pct)
 
 
-mgr.SPOILERS_off = msfs.input_event_executer('HANDLING_Spoilers', 0)
-mgr.SPOILERS_on  = msfs.input_event_executer('HANDLING_Spoilers', 1)
 mgr.SPOILERS_decrement = function(evid,args)
     msfs.execute_input_event('HANDLING_Spoilers', 0)
 end
@@ -126,20 +124,6 @@ end
 mgr.SPOILERS_lever_16k = function(evid,args)
     msfs.execute_input_event('HANDLING_Spoilers',16384*mixmax_percent(args))
 end
-
-
-mgr.SCRAM_ready = function(evid,args)
-    msfs.execute_input_event('ELECTRICAL_Fuel_Cell', 1)
-    msfs.execute_input_event('COMMON_Cover_Transition', 0)
-end
-mgr.SCRAM_unready = function(evid,args)
-    msfs.execute_input_event('ENGINE_Transition', 0)
-    msfs.execute_input_event('ELECTRICAL_Fuel_Cell', 1)
-    msfs.execute_input_event('COMMON_Cover_Transition', 1)
-end
-mgr.SCRAM_on  = msfs.input_event_executer('ENGINE_Transition', 1)
-mgr.SCRAM_off = msfs.input_event_executer('ENGINE_Transition', 0)
-
 
 mgr.RUDDER_up   = msfs.input_event_executer('HANDLING_Water_Rudder', 0)
 mgr.RUDDER_down = msfs.input_event_executer('HANDLING_Water_Rudder', 1)

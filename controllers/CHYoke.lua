@@ -8,25 +8,48 @@ hController.tTombstone = {
     },
 }
 
+hController.defaultMods = {
+    {name = 'x', modtype = 'quantized_stick', repeat_mode = false, activate_threshold = 49999, release_threshold = 50000, },
+    {name = 'y', modtype = 'quantized_stick', repeat_mode = false, activate_threshold = 49999, release_threshold = 50000, },
+}
+
 -- X & Y axes are the yoke/stick for roll & pitch
 -- Z axis is the barrel-shaped throttle lever
 -- RY axis is the squarish crown-shaped prop lever
 -- RX axis is the round spikey mixture lever
 
 
---$ awk '{for (i=1;i<=NF;i++){if($i=="return"){print $(i+1)}}}' planes.lua | awk -F, '{print $1}' | sort -u | grep -v '^mgr$' | xargs echo
---A20N A320 A5 B350 B748 B78X BE36 BE58 B407 C152 C172 C208 C25C C700 Cabri CC19 CP10 Cub DA40 DA62 Darkstar DC3 DGF DHC2 DR40 DV20 E300 FA18E FDCT G21A H4 JN4D MXS Orbis PC6 PIVI PTS2 S22T SAVG Spirit TBM9 VELO VL3 Wright
-
--- The only default actions for this controller are pitch and roll, managed by the in-game
--- controller settings.
-
 function hController.applyDefaultActions(tEventActionMap,hAircraft,tEventIDs)
     if hAircraft then
-        if hAircraft.nEngines and tManagers["Action"].ENGINE_Throttle and tManagers["Action"].ENGINE_Throttle[hAircraft.nEngines] then
-            tEventActionMap[tEventIDs.z.change] = tManagers["Action"].ENGINE_Throttle[hAircraft.nEngines]
+        if hAircraft.nEng then
+            if tManagers["Action"].ENGINE_Throttle and tManagers["Action"].ENGINE_Throttle[hAircraft.nEng] then
+                mapper.print("CHYoke:applyDefaultActions() is mapping event z.change to action tManagers[Action].ENGINE_Throttle["..hAircraft.nEng.."]")
+                tEventActionMap[tEventIDs.z.change] = tManagers["Action"].ENGINE_Throttle[hAircraft.nEng]
+            end
         end
-        if hAircraft.nMixture and tManagers["Action"].FUEL_Mixture and tManagers["Action"].FUEL_Mixture[hAircraft.nMixture] then
-            tEventActionMap[tEventIDs.rx.change] = tManagers["Action"].FUEL_Mixture[hAircraft.nMixture]
+        if hAircraft.nMix then
+            if tManagers["Action"].FUEL_Mixture and tManagers["Action"].FUEL_Mixture[hAircraft.nMix] then
+                mapper.print("CHYoke:applyDefaultActions() is mapping event rx.change to action tManagers[Action].FUEL_Mixture["..hAircraft.nMix.."]")
+                tEventActionMap[tEventIDs.rx.change] = tManagers["Action"].FUEL_Mixture[hAircraft.nMix]
+            end
+        end
+        if hAircraft.nProp then
+            if tManagers["Action"].ENGINE_Propeller and tManagers["Action"].ENGINE_Propeller[hAircraft.nProp] then
+                mapper.print("CHYoke:applyDefaultActions() is mapping event ry.change to action tManagers[Action].ENGINE_Propeller["..hAircraft.nProp.."]")
+                tEventActionMap[tEventIDs.ry.change] = tManagers["Action"].ENGINE_Propeller[hAircraft.nProp]
+            end
+        end
+        if hAircraft.nCond then
+            if tManagers["Action"].FUEL_Condition and tManagers["Action"].FUEL_Condition[hAircraft.nCond] then
+                mapper.print("CHYoke:applyDefaultActions() is mapping event ry.change to action tManagers[Action].FUEL_Condition["..hAircraft.nCond.."]")
+                tEventActionMap[tEventIDs.rx.change] = tManagers["Action"].FUEL_Condition[hAircraft.nCond]
+            end
+        end
+        if hAircraft.nFthr then
+            if tManagers["Action"].ENGINE_Propeller_feather and tManagers["Action"].ENGINE_Propeller_feather[hAircraft.nFthr] then
+                mapper.print("CHYoke:applyDefaultActions() is mapping event ry.change to action tManagers[Action].ENGINE_Propeller_feather["..hAircraft.nFthr.."]")
+                tEventActionMap[tEventIDs.ry.change] = tManagers["Action"].ENGINE_Propeller_feather[hAircraft.nFthr]
+            end
         end
     end
 end

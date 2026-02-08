@@ -1,50 +1,63 @@
 local PlaneManager = {}
 
+--$ awk '{for (i=1;i<=NF;i++){if($i=="return"){print $(i+1)}}}' planes.lua | awk -F, '{print $1}' | sort -u | grep -v '^mgr$' | xargs echo
+--A20N A320 A5 B350 B748 B78X BE36 BE58 B407 C152 C172 C208 C25C C700 Cabri CC19 CP10 Cub DA40 DA62 Darkstar DC3 DGF DHC2 DR40 DV20 E300 FA18E FDCT G21A H4 JN4D MXS Orbis PC6 PIVI PTS2 S22T SAVG Spirit TBM9 VELO VL3 Wright
+
 local tPresets = {}
-tPresets.A5      = nil -- unique single engine, no avionics, with rudders
-tPresets.A20N    = nil -- has a broken throttle complained about in many forums
-tPresets.A320    = "C700"
-tPresets.B350    = "TurboProp2"
-tPresets.B748    = nil -- has unique values from other jumbo jets
-tPresets.B78X    = nil -- has unique values from other jumbo jets
-tPresets.BE36    = "gaVariProp"
-tPresets.BE58    = "gaVariProp2"
-tPresets.B407    = nil -- helicopter
-tPresets.C152    = "gaFixedProp"
-tPresets.C172    = "gaFixedProp"
-tPresets.C208    = "TurboProp"
-tPresets.C25C    = nil -- has unique values from other jumbo jets
-tPresets.C700    = nil -- has unique values from other jumbo jets
-tPresets.Cabri   = nil -- helicopter
-tPresets.CC19    = "gaVariProp"
-tPresets.CP10    = "gaFixedProp"
-tPresets.Cub     = nil -- Throttle, Choke
-tPresets.DA40    = "automatic"
-tPresets.DA62    = "automatic2"
-tPresets.DC3     = "gaVariProp2"
-tPresets.DGF     = nil -- glider with engine...
-tPresets.DHC2    = "gaVariProp"
-tPresets.DR40    = "gaFixedProp"
-tPresets.DV20    = nil -- prop w/out mixture, carb-heat lever
-tPresets.E300    = "gaVariProp"
-tPresets.FA18E   = nil -- spoilers are unique
-tPresets.FDCT    = nil -- has choke and brakes levers
-tPresets.G21A    = "gaVariProp2"
-tPresets.H4      = nil -- unique engine controls
-tPresets.JN4D    = nil -- mixture action is reversed
-tPresets.MXS     = nil -- glider
-tPresets.Orbis   = nil -- not flyable, static display
-tPresets.PC6     = "TurboProp"
-tPresets.PIVI    = nil -- Throttle, Prop, Choke
-tPresets.PTS1    = "gaFixedProp"
-tPresets.PTS2    = "gaVariProp"
-tPresets.S22T    = nil
-tPresets.SAVG    = nil -- Zlin Aviation Savage Cub (little yellow thing)
-tPresets.Spirit  = nil
-tPresets.TBM9    = nil
-tPresets.VOLO    = nil -- drone
-tPresets.VL3     = nil
-tPresets.Wright  = nil
+tPresets.A5       = nil -- unique single engine, no avionics, with rudders
+tPresets.A20N     = nil -- has a broken throttle complained about in many forums
+tPresets.A320     = "C700"
+tPresets.B350     = "TurboProp2"
+tPresets.B748     = nil -- has unique values from other jumbo jets
+tPresets.B78X     = nil -- has unique values from other jumbo jets
+tPresets.BE36     = "gaVariProp"
+tPresets.BE58     = "gaVariProp2"
+tPresets.B407     = nil -- helicopter
+tPresets.C152     = "gaFixedProp"
+tPresets.C172     = "gaFixedProp"
+tPresets.C208     = "TurboProp"
+tPresets.C25C     = nil -- has unique values from other jumbo jets
+tPresets.C700     = nil -- has unique values from other jumbo jets
+tPresets.Cabri    = nil -- helicopter
+tPresets.CC19     = "gaVariProp"
+tPresets.CP10     = "gaFixedProp"
+tPresets.Cub      = "automatic" -- Throttle from auto, Choke in plane/Cub.lua
+tPresets.Darkstar = "automatic2"
+tPresets.DA40     = "automatic"
+tPresets.DA62     = "automatic2"
+tPresets.DC3      = "gaVariProp2"
+tPresets.DGF      = nil -- glider with engine...
+tPresets.DHC2     = "gaVariProp"
+tPresets.DR40     = "gaFixedProp"
+tPresets.DV20     = nil -- prop w/out mixture, carb-heat lever
+tPresets.E300     = "gaVariProp"
+tPresets.FA18E    = nil -- spoilers are unique
+tPresets.FDCT     = nil -- has choke and brakes levers
+tPresets.G21A     = "gaVariProp2"
+tPresets.H4       = nil -- unique engine controls
+tPresets.JN4D     = nil -- mixture action is reversed
+tPresets.MXS      = nil -- glider
+tPresets.Orbis    = nil -- not flyable, static display
+tPresets.PC6      = "TurboProp"
+tPresets.PIVI     = nil -- Throttle, Prop, Choke
+tPresets.PTS1     = "gaFixedProp"
+tPresets.PTS2     = "gaVariProp"
+tPresets.S22T     = nil
+tPresets.SAVG     = nil -- Zlin Aviation Savage Cub (little yellow thing)
+tPresets.Spirit   = nil
+tPresets.TBM9     = nil
+tPresets.VOLO     = nil -- drone
+tPresets.VL3      = nil
+tPresets.Wright   = nil
+
+tAircraft = {}
+tAircraft.automatic   = { nEng = 1, }
+tAircraft.automatic2  = { nEng = 2, }
+tAircraft.gaFixedProp = { nEng = 1, nMix  = 1, }
+tAircraft.gaVariProp  = { nEng = 1, nMix  = 1, nProp = 1, }
+tAircraft.gaVariProp2 = { nEng = 2, nMix  = 2, nProp = 2, }
+tAircraft.TurboProp   = { nEng = 1, nCond = 1, nFthr = 1, }
+tAircraft.TurboProp2  = { nEng = 2, nCond = 2, nFthr = 2, }
 
 local function getMakeAvionics(sAircraftPrettyName)
     local sFirstWord,sFirstTwoWords = tManagers["String"].getFirstTwoWords(sAircraftPrettyName)
@@ -152,15 +165,29 @@ function PlaneManager.setMappings(sAircraftPrettyName)
         mapper.print("FATAL: unable to determine the make and avionics of the aircraft, loading nothing")
         return
     end
-    local sConfiguration = (tPresets[sMake] or sMake)
 
-    local bLoadedAircraftFile,hAircraft = pcall(tryImport, "planes/"..sConfiguration)
+    local hPreset = nil
+    -- when a tPreset exists, some auto-config options can be applied
+    if tPresets[sMake] then
+        -- when a tAircraft exists for a preset, the auto-config knows what to do
+        if tAircraft[tPresets[sMake]] then
+            hPreset = tAircraft[tPresets[sMake]]
+        else
+            -- but when a tPreset exists without a related tAircraft,
+            -- that's a full-on clone, e.g. A320 clones all from C700
+            sMake = tPresets[sMake]
+        end
+    end
+
+    local bLoadedAircraftFile,hAircraft = pcall(tryImport, "planes/"..sMake)
     if not bLoadedAircraftFile then
-        mapper.print("WARNING: unable to get a handle to aircraft configuration "..sConfiguration..", loading minimal configuration")
-        hAircraft = nil
+        hAircraft = hPreset
     else
+        for k,v in pairs(hPreset) do
+            hAircraft[k] = v
+        end
         if hAircraft.onInit then hAircraft.onInit() end
-        mapper.print("Loaded aircraft configuration "..sConfiguration)
+        mapper.print("Loaded aircraft configuration "..sMake)
     end
 
     local tEventActionMap = {}
