@@ -1,7 +1,7 @@
-local Darkstar = {}
+local hAircraft = {}
 
-Darkstar.tModifiers = {}
-Darkstar.tModifiers["CHYoke"] = {
+hAircraft.tModifiers = {}
+hAircraft.tModifiers["CHYoke"] = {
     { name = "button7", modtype = 'button' },
     { name = "button8", modtype = 'button' },
     {
@@ -25,7 +25,7 @@ Darkstar.tModifiers["CHYoke"] = {
 }
 
 -- build functions for simple toggles
-Darkstar.tStateTrackers = {
+hAircraft.tStateTrackers = {
     battery     = { iValue = 0, sSystem = "ELECTRICAL_Battery_1" },
     beacons     = { iValue = 0, sSystem = {'LIGHTING_BEACON_1','LIGHTING_BEACON_2','LIGHTING_NAV_1'}  },
     landlights  = { iValue = 0, sSystem = "LIGHTING_LANDING_1"  },
@@ -34,7 +34,7 @@ Darkstar.tStateTrackers = {
 }
 for _,sTrackerName in ipairs({"battery","beacons","landlights","alternator1","alternator2"}) do
     sFnName = "toggle_"..sTrackerName
-    Darkstar[sFnName] = function() tManagers["Action"].toggle(Darkstar.tStateTrackers[sTrackerName]) end
+    hAircraft[sFnName] = function() tManagers["Action"].toggle(hAircraft.tStateTrackers[sTrackerName]) end
 end
 
 -- Build functions for APU_sVerb_sState
@@ -42,7 +42,7 @@ for _,sVerb in ipairs({"Start","Stop"}) do
     sAPU = "ELECTRICAL_APU_"..sVerb
     for iState,sState in ipairs({"press","release"}) do
         sFnName = "APU_"..sVerb.."_"..sState
-        Darkstar[sFnName] = msfs.input_event_executer(sAPU,(iState)%2)
+        hAircraft[sFnName] = msfs.input_event_executer(sAPU,(iState)%2)
     end
 end
 
@@ -51,29 +51,29 @@ for iEngine = 1, 2 do
     sSwitch = "ENGINE_Engine_Switch_" .. iEngine
     for iState = 0, 2 do
         sFnName = "engine"..iEngine.."_state"..iState
-        Darkstar[sFnName] = msfs.input_event_executer(sSwitch,iState)
+        hAircraft[sFnName] = msfs.input_event_executer(sSwitch,iState)
     end
 end
 
-function Darkstar.onGeneratorHat(evid,args)
---  mapper.print("Darkstar:onGeneratorHat() args=["..(args or "nil").."]")
+function hAircraft.onGeneratorHat(evid,args)
+--  mapper.print("hAircraft:onGeneratorHat() args=["..(args or "nil").."]")
     if args < 0 then return end
     iDirection = args / 9000
     if iDirection == 0 then
         msfs.execute_input_event('COMMON_Cover_Generator_1', 1)
         msfs.execute_input_event('COMMON_Cover_Generator_2', 1)
     elseif iDirection == 1 then
-        Darkstar.toggle_alternator2()
+        hAircraft.toggle_alternator2()
     elseif iDirection == 2 then
         msfs.execute_input_event('COMMON_Cover_Generator_1', 0)
         msfs.execute_input_event('COMMON_Cover_Generator_2', 0)
     elseif iDirection == 3 then
-        Darkstar.toggle_alternator1()
+        hAircraft.toggle_alternator1()
     end
 end
 
-function Darkstar.onTrimHat(evid,args)
---  mapper.print("Darkstar:onTrimHat() args=["..(args or "nil").."]")
+function hAircraft.onTrimHat(evid,args)
+--  mapper.print("hAircraft:onTrimHat() args=["..(args or "nil").."]")
     iDirection = args / 9000
     if args < 0 then
         msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 4)
@@ -89,58 +89,58 @@ function Darkstar.onTrimHat(evid,args)
 end
 
 
-function Darkstar.SCRAM_ready(nEventID,tArgs)
+function hAircraft.SCRAM_ready(nEventID,tArgs)
     msfs.execute_input_event('ELECTRICAL_Fuel_Cell', 1)
     msfs.execute_input_event('COMMON_Cover_Transition', 0)
 end
-function Darkstar.SCRAM_unready(nEventID,tArgs)
+function hAircraft.SCRAM_unready(nEventID,tArgs)
     msfs.execute_input_event('ENGINE_Transition', 0)
     msfs.execute_input_event('ELECTRICAL_Fuel_Cell', 1)
     msfs.execute_input_event('COMMON_Cover_Transition', 1)
 end
-Darkstar.SCRAM_on     = msfs.input_event_executer('ENGINE_Transition', 1)
-Darkstar.SCRAM_off    = msfs.input_event_executer('ENGINE_Transition', 0)
-Darkstar.SPOILERS_off = msfs.input_event_executer('HANDLING_Spoilers', 0)
-Darkstar.SPOILERS_on  = msfs.input_event_executer('HANDLING_Spoilers', 1)
+hAircraft.SCRAM_on     = msfs.input_event_executer('ENGINE_Transition', 1)
+hAircraft.SCRAM_off    = msfs.input_event_executer('ENGINE_Transition', 0)
+hAircraft.SPOILERS_off = msfs.input_event_executer('HANDLING_Spoilers', 0)
+hAircraft.SPOILERS_on  = msfs.input_event_executer('HANDLING_Spoilers', 1)
 
 
 
-function Darkstar.applyControllerActions(tEventActionMap,hAircraft,sController,hController,tEventIDs)
-    mapper.print("Darkstar:applyControllerActions() for sController=["..sController.."]")
+function hAircraft.applyControllerActions(tEventActionMap,hAircraft,sController,hController,tEventIDs)
+    mapper.print("hAircraft:applyControllerActions() for sController=["..sController.."]")
     if sController == "F710" then
-        tEventActionMap[tEventIDs.button7.down] = Darkstar.toggle_battery
-        tEventActionMap[tEventIDs.button1.down] = Darkstar.toggle_beacons
-        tEventActionMap[tEventIDs.button4.down] = Darkstar.toggle_landlights
+        tEventActionMap[tEventIDs.button7.down] = hAircraft.toggle_battery
+        tEventActionMap[tEventIDs.button1.down] = hAircraft.toggle_beacons
+        tEventActionMap[tEventIDs.button4.down] = hAircraft.toggle_landlights
 
         mapper.print("Setting F710 button3 down nEventID=["..tEventIDs.button3.down.."] to APU_Start_press")
-        tEventActionMap[tEventIDs.button3.down] = Darkstar.APU_Start_press
-        tEventActionMap[tEventIDs.button3.up]   = Darkstar.APU_Start_release
-        tEventActionMap[tEventIDs.button2.down] = Darkstar.APU_Stop_press
-        tEventActionMap[tEventIDs.button2.up]   = Darkstar.APU_Stop_release
+        tEventActionMap[tEventIDs.button3.down] = hAircraft.APU_Start_press
+        tEventActionMap[tEventIDs.button3.up]   = hAircraft.APU_Start_release
+        tEventActionMap[tEventIDs.button2.down] = hAircraft.APU_Stop_press
+        tEventActionMap[tEventIDs.button2.up]   = hAircraft.APU_Stop_release
 
-        tEventActionMap[tEventIDs.y.negative]   = Darkstar.engine1_state0
-        tEventActionMap[tEventIDs.x.positive]   = Darkstar.engine1_state1
-        tEventActionMap[tEventIDs.x.negative]   = Darkstar.engine1_state1
-        tEventActionMap[tEventIDs.y.positive]   = Darkstar.engine1_state2
+        tEventActionMap[tEventIDs.y.negative]   = hAircraft.engine1_state0
+        tEventActionMap[tEventIDs.x.positive]   = hAircraft.engine1_state1
+        tEventActionMap[tEventIDs.x.negative]   = hAircraft.engine1_state1
+        tEventActionMap[tEventIDs.y.positive]   = hAircraft.engine1_state2
 
-        tEventActionMap[tEventIDs.ry.negative]  = Darkstar.engine2_state0
-        tEventActionMap[tEventIDs.rx.positive]  = Darkstar.engine2_state1
-        tEventActionMap[tEventIDs.rx.negative]  = Darkstar.engine2_state1
-        tEventActionMap[tEventIDs.ry.positive]  = Darkstar.engine2_state2
+        tEventActionMap[tEventIDs.ry.negative]  = hAircraft.engine2_state0
+        tEventActionMap[tEventIDs.rx.positive]  = hAircraft.engine2_state1
+        tEventActionMap[tEventIDs.rx.negative]  = hAircraft.engine2_state1
+        tEventActionMap[tEventIDs.ry.positive]  = hAircraft.engine2_state2
 
-        tEventActionMap[tEventIDs.pov1.change]  = Darkstar.onGeneratorHat
+        tEventActionMap[tEventIDs.pov1.change]  = hAircraft.onGeneratorHat
     elseif sController == "CHYoke" then
 
-        tEventActionMap[tEventIDs.pov1.change]  = Darkstar.onTrimHat
+        tEventActionMap[tEventIDs.pov1.change]  = hAircraft.onTrimHat
 
-        tEventActionMap[tEventIDs.ry.positive]  = Darkstar.SPOILERS_off
-        tEventActionMap[tEventIDs.ry.negative]  = Darkstar.SPOILERS_on
-        tEventActionMap[tEventIDs.rx.positive]  = Darkstar.SCRAM_ready
-        tEventActionMap[tEventIDs.rx.negative]  = Darkstar.SCRAM_unready
-        tEventActionMap[tEventIDs.button7.down] = Darkstar.SCRAM_on
-        tEventActionMap[tEventIDs.button8.down] = Darkstar.SCRAM_off
+        tEventActionMap[tEventIDs.ry.positive]  = hAircraft.SPOILERS_off
+        tEventActionMap[tEventIDs.ry.negative]  = hAircraft.SPOILERS_on
+        tEventActionMap[tEventIDs.rx.positive]  = hAircraft.SCRAM_ready
+        tEventActionMap[tEventIDs.rx.negative]  = hAircraft.SCRAM_unready
+        tEventActionMap[tEventIDs.button7.down] = hAircraft.SCRAM_on
+        tEventActionMap[tEventIDs.button8.down] = hAircraft.SCRAM_off
 
     end
 end
 
-return Darkstar
+return hAircraft
