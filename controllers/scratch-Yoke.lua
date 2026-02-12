@@ -77,25 +77,6 @@ dev.map.rx.change.DV20 = action_mgr.DEICE_Engine[1]
 dev.map.ry.change.DV20 = action_mgr.ENGINE_Propeller[1]
 
 
-dev.profiles.FA18E = { name=dev.name, type=dev.type, identifier=dev.identifier }
-dev.profiles.FA18E.modifiers = {
-    {
-        name = 'ry',
-        modtype = 'quantized_stick',
-        modparam = {
-            repeat_mode = true,
-            repeat_delay = 100,
-            repeat_interval = 100,
-            activate_threshold = 49500,
-            release_threshold  = 49501,
-        }
-    },
-}
-dev.map.z.change.FA18E = action_mgr.ENGINE_Throttle[2]
-dev.map.ry.negative.FA18E = action_mgr.SPOILERS_decrement
-dev.map.ry.positive.FA18E = action_mgr.SPOILERS_increment
-
-
 dev.profiles.FDCT = { name=dev.name, type=dev.type, identifier=dev.identifier }
 dev.profiles.FDCT.modifiers = {
     {
