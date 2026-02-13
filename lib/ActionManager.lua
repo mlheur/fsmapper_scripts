@@ -174,4 +174,20 @@ function mgr.toggle(tTracker)
     end
 end
 
+function mgr.onTrimHat(evid,args)
+--  mapper.print("hAircraft:onTrimHat() args=["..(args or "nil").."]")
+    iDirection = args / 9000
+    if args < 0 then
+        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 4)
+    elseif iDirection == 0 then
+        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 3)
+    elseif iDirection == 1 then
+        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 1)
+    elseif iDirection == 2 then
+        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 2)
+    elseif iDirection == 3 then
+        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 0)
+    end
+end
+
 return mgr

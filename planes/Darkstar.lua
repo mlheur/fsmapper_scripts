@@ -2,8 +2,6 @@ local hAircraft = {}
 
 hAircraft.tModifiers = {}
 hAircraft.tModifiers["CHYoke"] = {
-    { name = "button7", modtype = 'button' },
-    { name = "button8", modtype = 'button' },
     {
         name = 'ry',
         modtype = 'quantized_stick',
@@ -72,22 +70,6 @@ function hAircraft.onGeneratorHat(evid,args)
     end
 end
 
-function hAircraft.onTrimHat(evid,args)
---  mapper.print("hAircraft:onTrimHat() args=["..(args or "nil").."]")
-    iDirection = args / 9000
-    if args < 0 then
-        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 4)
-    elseif iDirection == 0 then
-        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 3)
-    elseif iDirection == 1 then
-        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 1)
-    elseif iDirection == 2 then
-        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 2)
-    elseif iDirection == 3 then
-        msfs.execute_input_event('HANDLING_AILERON_ELEVATOR_Trim', 0)
-    end
-end
-
 
 function hAircraft.SCRAM_ready(nEventID,tArgs)
     msfs.execute_input_event('ELECTRICAL_Fuel_Cell', 1)
@@ -131,7 +113,11 @@ function hAircraft.applyControllerActions(tEventActionMap,hAircraft,sController,
         tEventActionMap[tEventIDs.pov1.change]  = hAircraft.onGeneratorHat
     elseif sController == "CHYoke" then
 
-        tEventActionMap[tEventIDs.pov1.change]  = hAircraft.onTrimHat
+        tEventActionMap[tEventIDs.pov1.change]  = tManagers["Action"].onTrimHat
+        tEventActionMap[tEventIDs.button11.down] = nil
+        tEventActionMap[tEventIDs.button12.down] = nil
+        tEventActionMap[tEventIDs.button11.up]   = nil
+        tEventActionMap[tEventIDs.button12.up]   = nil
 
         tEventActionMap[tEventIDs.ry.positive]  = hAircraft.SPOILERS_off
         tEventActionMap[tEventIDs.ry.negative]  = hAircraft.SPOILERS_on
