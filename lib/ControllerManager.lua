@@ -115,10 +115,12 @@ end
 function ControllerManager.applyActions(tEventActionMap)
     tAdditionalMappings = {}
     for nEventID,hActionFn in pairs(tEventActionMap) do
-        tMapping = {}
-        tMapping.event  = nEventID
-        tMapping.action = hActionFn
-        table.insert(tAdditionalMappings,tMapping)
+        if hActionFn then
+            tMapping = {}
+            tMapping.event  = nEventID
+            tMapping.action = hActionFn
+            table.insert(tAdditionalMappings,tMapping)
+        end
     end
     mapper.add_secondary_mappings(tAdditionalMappings)
 end
