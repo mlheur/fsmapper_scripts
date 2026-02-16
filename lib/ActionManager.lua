@@ -190,4 +190,6 @@ function mgr.onTrimHat(evid,args)
     end
 end
 
+mgr.setAutopilotOn = msfs.mfwasm.rpn_executer("1 (>K:AP_MASTER)")
+
 return mgr

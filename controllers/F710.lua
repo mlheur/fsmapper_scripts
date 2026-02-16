@@ -71,6 +71,8 @@ function hController.applyAvionicsKnobs(tEventActionMap,tKnobSpecs,tEventIDs)
     tEventActionMap[tEventIDs.ry.negative]   = msfs.mfwasm.rpn_executer(RPN)
     RPN = ("(>H:"..compileRPN(tKnobSpecs,bPilotCopilot,true,nil,true)..")")
     tEventActionMap[tEventIDs.button10.down] = msfs.mfwasm.rpn_executer(RPN)
+
+    tEventActionMap[tEventIDs.button4.down] = tManagers["Action"].setAutopilotOn
 end
 
 return hController

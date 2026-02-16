@@ -66,11 +66,8 @@ function hAircraft.onHdgTk(nEventID,tArgs)
         nStateHdgTk = 1.0
     end
     if bChanged then
-        mapper.print("bChanged")
+        --mapper.print("bChanged")
         msfs.execute_input_event('AS04F_EFD_Switch_HDG_TK', nStateHdgTk)
-    else
-        mapper.print("not bChanged, reset")
-        msfs.execute_input_event('AS04F_EFD_Switch_HDG_TK', 1.0)
     end
 end
 
@@ -93,9 +90,9 @@ function hAircraft.applyControllerActions(tEventActionMap,hAircraft,sController,
         tEventActionMap[tEventIDs.button12.up]   = nil
     elseif sController == "F710" then
         tEventActionMap[tEventIDs.pov1.change]  = hAircraft.onStarterHat
-        --tEventActionMap[tEventIDs.button4.down] = hAircraft.onLandingLights
+        tEventActionMap[tEventIDs.button4.down] = hAircraft.onLandingLights
     elseif sController == "DualAction" then
-        mapper.print("F18 setup DualAction x.change handler")
+        --mapper.print("F18 setup DualAction x.change handler")
         tEventActionMap[tEventIDs.x.change]  = hAircraft.onHdgTk
     end
 end
