@@ -18,7 +18,7 @@ hController.defaultMods = {
     {name = 'button9',  modtype = 'button'},
     {name = 'button10', modtype = 'button'},
     {name = 'button12', modtype = 'button'},
-    {name = 'x',        modtype = 'quantized_stick', modparam = { repeat_interval = 100, } },
+    --{name = 'x' },
     {name = 'z',        modtype = 'quantized_stick', modparam = { repeat_interval = 100, } },
     {name = 'rz',       modtype = 'quantized_stick', modparam = { repeat_interval = 100, } },
     -- Y axis (Left Thumbstick, up & down) controls the global Altimeter through Kohlsman SimVar.

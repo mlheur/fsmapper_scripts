@@ -1,5 +1,7 @@
 hAircraft = {}
 
+hAircraft.name = "FA18E"
+
 hAircraft.tModifiers = {}
 hAircraft.tModifiers["CHYoke"] = {
     {
@@ -17,17 +19,19 @@ hAircraft.tModifiers["CHYoke"] = {
 
 local nStateNWS = 0
 local function onChangeNWS(nEventID,nValue)
-    if     nValue >  49500 and nStateNWS == 0 then
+    if     nValue >  49500 and nStateNWS <= 0 then
         msfs.execute_input_event('HANDLING_GLimiter', 0)
         mapper.print("Trigger GLimiter")
         nStateNWS = 1
-    elseif nValue < -49500 and nStateNWS == 0 then
+    elseif nValue < -49500 and nStateNWS >= 0 then
         mapper.print("Trigger NWS")
         msfs.execute_input_event('AS04F_Push_NWS', 1)
         nStateNWS = -1
-    elseif nValue > -49500 and nValue < 49500 and nStateNWS ~= 0 then
+    elseif nValue > -49500 and nValue < 49500 and nStateNWS < 0 then
         mapper.print("Release NWS")
         msfs.execute_input_event('AS04F_Push_NWS', 0)
+        nStateNWS = 0
+    elseif nValue > -49500 and nValue < 49500 and nStateNWS > 0 then
         nStateNWS = 0
     end
 end
@@ -47,6 +51,36 @@ function hAircraft.onStarterHat(evid,args)
     end
 end
 
+local nStateHdgTk = 1.0
+function hAircraft.onHdgTk(nEventID,tArgs)
+    --mapper.print("hAircraft.onHdgTk tArgs=["..tArgs.."]")
+    local bChanged = false
+    if nStateHdgTk == 1.0 and tArgs < -49000 then
+        bChanged = true
+        nStateHdgTk = 0.0
+    elseif nStateHdgTk == 1.0 and tArgs > 49000 then
+        bChanged = true
+        nStateHdgTk = 2.0
+    elseif nStateHdgTk ~= 1.0 and tArgs > -40000 and tArgs < 40000 then
+        bChanged = true
+        nStateHdgTk = 1.0
+    end
+    if bChanged then
+        mapper.print("bChanged")
+        msfs.execute_input_event('AS04F_EFD_Switch_HDG_TK', nStateHdgTk)
+    else
+        mapper.print("not bChanged, reset")
+        msfs.execute_input_event('AS04F_EFD_Switch_HDG_TK', 1.0)
+    end
+end
+
+local nStateLandingLights = 0
+function hAircraft.onLandingLights(nEventID,tArgs)
+    nStateLandingLights = nStateLandingLights + 1
+    nStateLandingLights = nStateLandingLights % 2
+    msfs.execute_input_event('LIGHTING_LANDING_1', nStateLandingLights)
+end
+
 function hAircraft.applyControllerActions(tEventActionMap,hAircraft,sController,hController,tEventIDs)
     if sController == "CHYoke" then
         tEventActionMap[tEventIDs.ry.negative] = tManagers["Action"].SPOILERS_decrement
@@ -59,7 +93,12 @@ function hAircraft.applyControllerActions(tEventActionMap,hAircraft,sController,
         tEventActionMap[tEventIDs.button12.up]   = nil
     elseif sController == "F710" then
         tEventActionMap[tEventIDs.pov1.change]  = hAircraft.onStarterHat
+        --tEventActionMap[tEventIDs.button4.down] = hAircraft.onLandingLights
+    elseif sController == "DualAction" then
+        mapper.print("F18 setup DualAction x.change handler")
+        tEventActionMap[tEventIDs.x.change]  = hAircraft.onHdgTk
     end
 end
+
 
 return hAircraft

@@ -179,8 +179,11 @@ function PlaneManager.setMappings(sAircraftPrettyName)
         end
     end
 
+    --mapper.print("Resolved make through presets: sMake=["..sMake.."]")
+
     local bLoadedAircraftFile,hAircraft = pcall(tryImport, "planes/"..sMake)
     if not bLoadedAircraftFile then
+        --mapper.print("not bLoadedAircraftFile so going to hPreset=["..tostring(hPreset).."]")
         hAircraft = hPreset
     else
         for k,v in pairs(hPreset) do
@@ -189,6 +192,8 @@ function PlaneManager.setMappings(sAircraftPrettyName)
         if hAircraft.onInit then hAircraft.onInit() end
         mapper.print("Loaded aircraft configuration "..sMake)
     end
+
+    --if hAircraft.name then mapper.print("have hAircraft.name=["..hAircraft.name.."]") end
 
     local tEventActionMap = {}
     tManagers["Controller"].openControllers(hAircraft)

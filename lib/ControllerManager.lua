@@ -97,17 +97,15 @@ end
 
 
 function ControllerManager.updateAircraftActions(tEventActionMap,hAircraft)
-    if hAircraft == nil then return end
+    if not (hAircraft and hAircraft.applyControllerActions) then return end
     for i,sController in ipairs(tControllerList) do
-        if hAircraft.applyControllerActions then
-            hAircraft.applyControllerActions(
-                    tEventActionMap,
-                    hAircraft,
-                    sController,
-                    ControllerManager.tCtlMgrs[sController],
-                    ControllerManager.tEventIDs[sController]
-                )
-        end
+        hAircraft.applyControllerActions(
+                tEventActionMap,
+                hAircraft,
+                sController,
+                ControllerManager.tCtlMgrs[sController],
+                ControllerManager.tEventIDs[sController]
+            )
     end
 end
 

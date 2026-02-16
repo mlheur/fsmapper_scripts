@@ -1,5 +1,7 @@
 local hAircraft = {}
 
+hAircraft.name = "Darkstar"
+
 hAircraft.tModifiers = {}
 hAircraft.tModifiers["CHYoke"] = {
     {
