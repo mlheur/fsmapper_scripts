@@ -21,8 +21,11 @@ hController.defaultMods = {
     { name = "button10", modtype = 'button' },
     { name = "button11", modtype = 'button', modparam = { repeat_interval = 10, } },
     { name = "button12", modtype = 'button', modparam = { repeat_interval = 10, } },
-    { name = 'x', modtype = 'quantized_stick', modparam = { repeat_mode = false, activate_threshold = 49999, release_threshold = 50000, } },
-    { name = 'y', modtype = 'quantized_stick', modparam = { repeat_mode = false, activate_threshold = 49999, release_threshold = 50000, } },
+    { name = "x",  modtype = "raw", modparam = {epsilon = 2500}},
+    { name = "y",  modtype = "raw", modparam = {epsilon = 2500}},
+    { name = "z",  modtype = "raw", modparam = {epsilon = 2500}},
+    { name = "rx", modtype = "raw", modparam = {epsilon = 2500}},
+    { name = "ry", modtype = "raw", modparam = {epsilon = 2500}},
 }
 
 -- X & Y axes are the yoke/stick for roll & pitch
