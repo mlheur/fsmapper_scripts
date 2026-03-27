@@ -196,7 +196,7 @@ function PlaneManager.setMappings(sAircraftPrettyName)
         mapper.print("Loaded aircraft configuration "..sMake)
     end
 
-    if hAircraft.name then mapper.print("have hAircraft.name=["..hAircraft.name.."]") end
+    if hAircraft and hAircraft.name then mapper.print("have hAircraft.name=["..hAircraft.name.."]") end
 
     local tEventActionMap = {}
     tManagers["Controller"].openControllers(hAircraft)
