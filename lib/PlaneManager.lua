@@ -186,14 +186,17 @@ function PlaneManager.setMappings(sAircraftPrettyName)
         --mapper.print("not bLoadedAircraftFile so going to hPreset=["..tostring(hPreset).."]")
         hAircraft = hPreset
     else
-        for k,v in pairs(hPreset) do
-            hAircraft[k] = v
+        --mapper.print("bLoadedAircraftFile so layering in hPreset=["..tostring(hPreset).."]")
+        if hPreset then
+            for k,v in pairs(hPreset) do
+                hAircraft[k] = v
+            end
         end
         if hAircraft.onInit then hAircraft.onInit() end
-        mapper.print("Loaded aircraft configuration "..sMake)
+        --mapper.print("Loaded aircraft configuration "..sMake)
     end
 
-    --if hAircraft.name then mapper.print("have hAircraft.name=["..hAircraft.name.."]") end
+    --if hAircraft and hAircraft.name then mapper.print("have hAircraft.name=["..hAircraft.name.."]") end
 
     local tEventActionMap = {}
     tManagers["Controller"].openControllers(hAircraft)
