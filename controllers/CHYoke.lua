@@ -34,11 +34,21 @@ hController.defaultMods = {
 -- RX axis is the round spikey mixture lever
 
 function hController.applyDefaultActions(tEventActionMap,hAircraft,tEventIDs)
-    tEventActionMap[tEventIDs.button12.down] = msfs.input_event_executer('HANDLING_ElevatorTrim_Yoke', 2)
-    tEventActionMap[tEventIDs.button11.down] = msfs.input_event_executer('HANDLING_ElevatorTrim_Yoke', 0)
-    tEventActionMap[tEventIDs.button12.up]   = msfs.input_event_executer('HANDLING_ElevatorTrim_Yoke', 1)
-    tEventActionMap[tEventIDs.button11.up]   = msfs.input_event_executer('HANDLING_ElevatorTrim_Yoke', 1)
+    --tEventActionMap[tEventIDs.button12.down] = msfs.input_event_executer('HANDLING_ElevatorTrim_Yoke', 2)
+    --tEventActionMap[tEventIDs.button11.down] = msfs.input_event_executer('HANDLING_ElevatorTrim_Yoke', 0)
+    --tEventActionMap[tEventIDs.button12.up]   = msfs.input_event_executer('HANDLING_ElevatorTrim_Yoke', 1)
+    --tEventActionMap[tEventIDs.button11.up]   = msfs.input_event_executer('HANDLING_ElevatorTrim_Yoke', 1)
+    tEventActionMap[tEventIDs.button12.down] = msfs.input_event_executer('HANDLING_ElevatorTrim_1', 2)
+    tEventActionMap[tEventIDs.button11.down] = msfs.input_event_executer('HANDLING_ElevatorTrim_1', 0)
+    tEventActionMap[tEventIDs.button12.up]   = msfs.input_event_executer('HANDLING_ElevatorTrim_1', 1)
+    tEventActionMap[tEventIDs.button11.up]   = msfs.input_event_executer('HANDLING_ElevatorTrim_1', 1)
     if hAircraft then
+        if hAircraft.bReducer then
+            if tManagers["Action"].ENGINE_Throttle_Reducer and tManagers["Action"].ENGINE_Throttle_Reducer[hAircraft.nEng] then
+                mapper.print("CHYoke:applyDefaultActions() is mapping event rx.change to action tManagers[Action].ENGINE_Throttle_Reducer["..hAircraft.nEng.."]")
+                tEventActionMap[tEventIDs.rx.change] = tManagers["Action"].ENGINE_Throttle_Reducer[hAircraft.nEng]
+            end
+        end
         if hAircraft.nEng then
             if tManagers["Action"].ENGINE_Throttle and tManagers["Action"].ENGINE_Throttle[hAircraft.nEng] then
                 mapper.print("CHYoke:applyDefaultActions() is mapping event z.change to action tManagers[Action].ENGINE_Throttle["..hAircraft.nEng.."]")

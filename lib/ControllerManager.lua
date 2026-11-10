@@ -1,6 +1,6 @@
 local ControllerManager = {}
 
-local tControllerList = {"F710","DualAction","CHYoke"}
+local tControllerList = {"F710","DualAction","DualAction2","CHYoke"}
 
 local function deepCopy(tInput)
     if type(tInput) ~= "table" then
