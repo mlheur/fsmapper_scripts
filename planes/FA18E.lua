@@ -30,24 +30,8 @@ hAircraft.tModifiers["DualAction2"] = {
     },
 }
 hAircraft.tModifiers["DualAction"] = {
-    {
-        name = 'y',
-        modtype = 'quantized_stick',
-        modparam = {
-            repeat_mode = false,
-            activate_threshold = 49500,
-            release_threshold  = 49501,
-        }
-    },
-    {
-        name = 'rz',
-        modtype = 'quantized_stick',
-        modparam = {
-            repeat_mode = false,
-            activate_threshold = 49500,
-            release_threshold  = 49501,
-        }
-    },
+    {name = 'y', modtype="raw"},
+    {name = 'rz',modtype="raw"}
 }
 
 local nStateNWS = 0
@@ -105,25 +89,6 @@ function hAircraft.onElectricHat(evid,args)
     end
 end
 
-local nStateHdgTk = 1.0
-function hAircraft.___Old___onHdgTk(nEventID,tArgs)
-    --mapper.print("hAircraft.onHdgTk tArgs=["..tArgs.."]")
-    local bChanged = false
-    if nStateHdgTk == 1.0 and tArgs < -49000 then
-        bChanged = true
-        nStateHdgTk = 0.0
-    elseif nStateHdgTk == 1.0 and tArgs > 49000 then
-        bChanged = true
-        nStateHdgTk = 2.0
-    elseif nStateHdgTk ~= 1.0 and tArgs > -40000 and tArgs < 40000 then
-        bChanged = true
-        nStateHdgTk = 1.0
-    end
-    if bChanged then
-        --mapper.print("bChanged")
-        msfs.execute_input_event('AS04F_EFD_Switch_HDG_TK', nStateHdgTk)
-    end
-end
 local nSelectedHeading = 0
 function adjustHeading(amt)
     nSelectedHeading = nSelectedHeading + amt
@@ -141,7 +106,6 @@ hAircraft.onHdgTk = filter.branch(
     {condition="falled", value=-49500, action=decrementHeading}
 )
 
-
 local nStateLandingLights = 0
 function hAircraft.onLandingLights(nEventID,tArgs)
     nStateLandingLights = nStateLandingLights + 1
@@ -149,30 +113,71 @@ function hAircraft.onLandingLights(nEventID,tArgs)
     msfs.execute_input_event('LIGHTING_LANDING_1', nStateLandingLights)
 end
 
-function AB1()
-    msfs.execute_input_event('ENGINE_Throttle_1_Afterburner', 1)
+local tAfterburnerOn = {}
+tAfterburnerOn[1] = false
+tAfterburnerOn[2] = false
+
+local tEngineStopped = {}
+tEngineStopped[1] = false
+tEngineStopped[2] = false
+
+local tThrottleValues = {}
+tThrottleValues[1] = 0
+tThrottleValues[2] = 0
+
+function hAircraft.setThrottle(fThrottleValue,nEngineID)
+    tThrottleValues[nEngineID] = fThrottleValue
+    if fThrottleValue > 0.0 then
+        tEngineStopped[nEngineID] = false
+    end
+    if fThrottleValue < 0.8 then
+        tAfterburnerOn[nEngineID] = false
+    end
+    msfs.execute_input_event('ENGINE_Throttle_'..nEngineID,fThrottleValue)
 end
 
-function AB2()
-    msfs.execute_input_event('ENGINE_Throttle_2_Afterburner', 1)
+function hAircraft.onSingleThrottle(nEventID,tArgs,nEngineID)
+    if not tEngineStopped[nEngineID] and tArgs == 50000 and tThrottleValues[nEngineID] <= 0.0 then
+        tEngineStopped[nEngineID] = true
+        msfs.execute_input_event('ENGINE_Throttle_'..nEngineID..'_STOP', 1)
+    elseif tArgs == 50000 and tThrottleValues[nEngineID] > 0.0 then
+        newThrottle = tThrottleValues[nEngineID] - 0.05
+        if newThrottle < 0 then
+            newThrottle = 0
+        end
+        hAircraft.setThrottle(newThrottle,nEngineID)
+    elseif tArgs == -50000 and tEngineStopped[nEngineID] then
+        tEngineStopped[nEngineID] = false
+        msfs.execute_input_event('ENGINE_Throttle_'..nEngineID..'_STOP', 0)
+    elseif tArgs == -50000 then
+        newThrottle = tThrottleValues[nEngineID] + 0.05
+        if newThrottle > 0.8 and not tAfterburnerOn[nEngineID] then
+            tAfterburnerOn[nEngineID] = true
+            msfs.execute_input_event('ENGINE_Throttle_'..nEngineID..'_Afterburner', 1)
+        end
+        if newThrottle > 1.0 then
+            newThrottle = 1.0
+        end
+        hAircraft.setThrottle(newThrottle,nEngineID)
+    end
+end
+function hAircraft.onLeftThrottle(nEventID,tArgs)
+    hAircraft.onSingleThrottle(nEventID,tArgs,1)
+end
+function hAircraft.onRightThrottle(nEventID,tArgs)
+    hAircraft.onSingleThrottle(nEventID,tArgs,2)
 end
 
-function Stop1()
-    msfs.execute_input_event('ENGINE_Throttle_1_STOP', 1)
+function hAircraft.onMainThrottle(nEventID,tArgs)
+    fThrottleValue = tManagers.Action.inverse_mixmax_percent(tArgs)
+    hAircraft.setThrottle(fThrottleValue,1)
+    hAircraft.setThrottle(fThrottleValue,2)
 end
-
-function Stop2()
-    msfs.execute_input_event('ENGINE_Throttle_2_STOP', 1)
-end
-
-
-
-
 
 
 function hAircraft.applyControllerActions(tEventActionMap,hAircraft,sController,hController,tEventIDs)
     if sController == "CHYoke" then
-        tEventActionMap[tEventIDs.z.change]      = tManagers["Action"].ENGINE_Throttle[2]
+        tEventActionMap[tEventIDs.z.change]      = hAircraft.onMainThrottle
         tEventActionMap[tEventIDs.ry.negative]   = tManagers["Action"].SPOILERS_decrement
         tEventActionMap[tEventIDs.ry.positive]   = tManagers["Action"].SPOILERS_increment
         tEventActionMap[tEventIDs.rx.change]     = onChangeNWS
@@ -193,10 +198,8 @@ function hAircraft.applyControllerActions(tEventActionMap,hAircraft,sController,
         tEventActionMap[tEventIDs.button3.down]  = msfs.input_event_executer('LIGHTING_STROBE_1', 0)
         tEventActionMap[tEventIDs.button4.down]  = hAircraft.onLandingLights
         tEventActionMap[tEventIDs.pov1.change]   = hAircraft.onStarterHat
-        tEventActionMap[tEventIDs.y.positive]    = Stop1
-        tEventActionMap[tEventIDs.rz.positive]   = Stop2
-        tEventActionMap[tEventIDs.y.negative]    = AB1
-        tEventActionMap[tEventIDs.rz.negative]   = AB2
+        tEventActionMap[tEventIDs.y.change]      = hAircraft.onLeftThrottle
+        tEventActionMap[tEventIDs.rz.change]     = hAircraft.onRightThrottle
     end
 end
 
