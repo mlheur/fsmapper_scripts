@@ -29,6 +29,26 @@ hAircraft.tModifiers["DualAction2"] = {
         }
     },
 }
+hAircraft.tModifiers["DualAction"] = {
+    {
+        name = 'y',
+        modtype = 'quantized_stick',
+        modparam = {
+            repeat_mode = false,
+            activate_threshold = 49500,
+            release_threshold  = 49501,
+        }
+    },
+    {
+        name = 'rz',
+        modtype = 'quantized_stick',
+        modparam = {
+            repeat_mode = false,
+            activate_threshold = 49500,
+            release_threshold  = 49501,
+        }
+    },
+}
 
 local nStateNWS = 0
 local function onChangeNWS(nEventID,nValue)
@@ -129,57 +149,30 @@ function hAircraft.onLandingLights(nEventID,tArgs)
     msfs.execute_input_event('LIGHTING_LANDING_1', nStateLandingLights)
 end
 
-function setAfterburner(newValue)
-    msfs.execute_input_event('ENGINE_Throttle_1_Afterburner', newValue)
-    msfs.execute_input_event('ENGINE_Throttle_2_Afterburner', newValue)
-    mapper.print("setAfterburner()")
-end
-function setAfterburnerOn()
-    setAfterburner(1)
-end
-function setAfterburnerOff()
-    setAfterburner(0)
+function AB1()
+    msfs.execute_input_event('ENGINE_Throttle_1_Afterburner', 1)
 end
 
-function setEngineStop(newValue)
-    msfs.execute_input_event('ENGINE_Throttle_1_STOP', newValue)
-    msfs.execute_input_event('ENGINE_Throttle_2_STOP', newValue)
-    mapper.print("setEngineStop()")
+function AB2()
+    msfs.execute_input_event('ENGINE_Throttle_2_Afterburner', 1)
 end
-function setEngineStopOn()
-    setEngineStop(1)
+
+function Stop1()
+    msfs.execute_input_event('ENGINE_Throttle_1_STOP', 1)
 end
-function setEngineStopOff()
-    setEngineStop(0)
+
+function Stop2()
+    msfs.execute_input_event('ENGINE_Throttle_2_STOP', 1)
 end
 
 
-
-
-
-
-local Item1 = filter.lerp(
-    tManagers["Action"].ENGINE_Throttle[2],
-    {
-        {-50000, -50000},
-        {-30000, -50000},
-        {50000, 50000}
-    }
-)
-local Item2 = filter.branch(
-    {condition="falled", value=-44000, action=setAfterburnerOn},
-    {condition="exceeded", value=-39000, action=setAfterburnerOff},
-    {condition="falled", value=49000, action=setEngineStopOff},
-    {condition="exceeded", value=49500, action=setEngineStopOn}
-)
-local throttle_fn = filter.duplicator(Item1,Item2)
 
 
 
 
 function hAircraft.applyControllerActions(tEventActionMap,hAircraft,sController,hController,tEventIDs)
     if sController == "CHYoke" then
-        tEventActionMap[tEventIDs.z.change]      = throttle_fn
+        tEventActionMap[tEventIDs.z.change]      = tManagers["Action"].ENGINE_Throttle[2]
         tEventActionMap[tEventIDs.ry.negative]   = tManagers["Action"].SPOILERS_decrement
         tEventActionMap[tEventIDs.ry.positive]   = tManagers["Action"].SPOILERS_increment
         tEventActionMap[tEventIDs.rx.change]     = onChangeNWS
@@ -200,6 +193,10 @@ function hAircraft.applyControllerActions(tEventActionMap,hAircraft,sController,
         tEventActionMap[tEventIDs.button3.down]  = msfs.input_event_executer('LIGHTING_STROBE_1', 0)
         tEventActionMap[tEventIDs.button4.down]  = hAircraft.onLandingLights
         tEventActionMap[tEventIDs.pov1.change]   = hAircraft.onStarterHat
+        tEventActionMap[tEventIDs.y.positive]    = Stop1
+        tEventActionMap[tEventIDs.rz.positive]   = Stop2
+        tEventActionMap[tEventIDs.y.negative]    = AB1
+        tEventActionMap[tEventIDs.rz.negative]   = AB2
     end
 end
 
